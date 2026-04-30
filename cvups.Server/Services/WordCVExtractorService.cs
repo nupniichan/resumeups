@@ -11,15 +11,36 @@ namespace cvups.Server.Services
         }
         public async Task<string> ExtractAsync(Stream fileStream)
         {
-            // I use NPOI library to convert
             return await Task.Run(() =>
             {
+                if (fileStream.CanSeek) fileStream.Position = 0;
+
                 var doc = new XWPFDocument(fileStream);
                 var sb = new System.Text.StringBuilder();
 
                 foreach (var paragraph in doc.Paragraphs)
                 {
-                    sb.AppendLine(paragraph.Text);
+                    var text = paragraph.Text?.Trim();
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        sb.AppendLine(text);
+                    }
+                }
+
+                foreach (var table in doc.Tables)
+                {
+                    foreach (var row in table.Rows)
+                    {
+                        foreach (var cell in row.GetTableCells())
+                        {
+                            var cellText = cell.GetText()?.Trim();
+                            if (!string.IsNullOrEmpty(cellText))
+                            {
+                                sb.Append(cellText + "\t");
+                            }
+                        }
+                        sb.AppendLine();
+                    }
                 }
 
                 return sb.ToString();

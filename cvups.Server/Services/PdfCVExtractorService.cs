@@ -11,7 +11,6 @@ namespace cvups.Server.Services
         }
         public async Task<string> ExtractAsync(Stream fileStream)
         {
-            // I use PdfPig library to convert
             return await Task.Run(() =>
             {
                 using var document = PdfDocument.Open(fileStream);
@@ -19,7 +18,13 @@ namespace cvups.Server.Services
 
                 foreach (var page in document.GetPages())
                 {
-                    sb.Append(page.Text);
+                    var words = page.GetWords();
+
+                    if (words != null)
+                    {
+                        var pageContent = string.Join(" ", words.Select(w => w.Text));
+                        sb.AppendLine(pageContent);
+                    }
                 }
 
                 return sb.ToString();

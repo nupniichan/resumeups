@@ -9,5 +9,7 @@
         public string MaskLinkedIn(string input);
         public string MaskPortfolioWebsite(string input);
         public string MaskGitHub(string input);
+
+        public string MaskAll(string cvtext);
     }
 }
