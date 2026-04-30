@@ -1,7 +1,0 @@
-<Solution>
-  <Project Path="cvups.client/cvups.client.esproj">
-    <Build />
-    <Deploy />
-  </Project>
-  <Project Path="cvups.Server/cvups.Server.csproj" />
-</Solution>
