@@ -3,7 +3,7 @@ using UglyToad.PdfPig;
 
 namespace cvups.Server.Services
 {
-    public class PDFCVExtractorService : ICVExtractor
+    public class PDFCVExtractorService : IResumeExtractor
     {
         public bool extensionType(string extension)
         {

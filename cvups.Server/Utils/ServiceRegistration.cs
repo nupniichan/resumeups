@@ -7,8 +7,8 @@ namespace cvups.Server.Utils
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddScoped<ICVExtractor, PDFCVExtractorService>();
-            services.AddScoped<ICVExtractor, WordCVExtractorService>();
+            services.AddScoped<IResumeExtractor, PdfExtractorService>();
+            services.AddScoped<IResumeExtractor, WordExtractorService>();
             services.AddScoped<IPiiMasker, PiiMaskerService>();
 
             return services;

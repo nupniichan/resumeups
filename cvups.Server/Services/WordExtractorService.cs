@@ -3,7 +3,7 @@ using NPOI.XWPF.UserModel;
 
 namespace cvups.Server.Services
 {
-    public class WordCVExtractorService : ICVExtractor
+    public class WordExtractorService : IResumeExtractor
     {
         public bool extensionType(string extension)
         {

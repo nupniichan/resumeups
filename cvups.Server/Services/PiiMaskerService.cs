@@ -67,18 +67,18 @@ namespace cvups.Server.Services
               + @"|cccd|cmnd|nric|sin|dni|nif|bsn|pesel|aadhaar)\s*[:\-#]?\s*[A-Z0-9]{6,18}\b",
                 m => m.Groups[1].Value + ": ****");
 
-        public string MaskAll(string cvText)
+        public string MaskAll(string resumeText)
         {
-            cvText = MaskEmail(cvText);
-            cvText = MaskPhoneNumber(cvText);
-            cvText = MaskDateOfBirth(cvText);
-            cvText = MaskAddress(cvText);
-            cvText = MaskLinkedIn(cvText);
-            cvText = MaskGitHub(cvText);
-            cvText = MaskPortfolioWebsite(cvText);
-            cvText = MaskIdDocuments(cvText);
-            cvText = MaskFullName(cvText);
-            return cvText;
+            resumeText = MaskEmail(resumeText);
+            resumeText = MaskPhoneNumber(resumeText);
+            resumeText = MaskDateOfBirth(resumeText);
+            resumeText = MaskAddress(resumeText);
+            resumeText = MaskLinkedIn(resumeText);
+            resumeText = MaskGitHub(resumeText);
+            resumeText = MaskPortfolioWebsite(resumeText);
+            resumeText = MaskIdDocuments(resumeText);
+            resumeText = MaskFullName(resumeText);
+            return resumeText;
         }
     }
 }
