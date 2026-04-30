@@ -1,0 +1,6 @@
+@cvups.Server_HostAddress = http://localhost:5228
+
+GET {{cvups.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
