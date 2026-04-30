@@ -1,6 +1,6 @@
-﻿namespace cvups.Server.Interfaces
+﻿namespace resumeups.Server.Interfaces
 {
-    public interface ICVExtractor
+    public interface IResumeExtractor
     {
         bool extensionType(string extension);
         Task<string> ExtractAsync(Stream fileStream);

@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using cvups.Server.Interfaces;
-using cvups.Server.Utils;
+using resumeups.Server.Interfaces;
+using resumeups.Server.Utils;
 
-namespace cvups.Server.Controllers
+namespace resumeups.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CVExtractorController : ControllerBase
+    public class ResumeExtractorController : ControllerBase
     {
-        private readonly IEnumerable<ICVExtractor> _extractors;
+        private readonly IEnumerable<IResumeExtractor> _extractors;
         private readonly IPiiMasker _piiMasker;
 
-        public CVExtractorController(IEnumerable<ICVExtractor> extractors, IPiiMasker piiMasker)
+        public ResumeExtractorController(IEnumerable<IResumeExtractor> extractors, IPiiMasker piiMasker)
         {
             _extractors = extractors;
             _piiMasker = piiMasker;

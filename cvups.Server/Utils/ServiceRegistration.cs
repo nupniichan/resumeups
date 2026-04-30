@@ -1,7 +1,7 @@
-﻿using cvups.Server.Interfaces;
-using cvups.Server.Services;
+﻿using resumeups.Server.Interfaces;
+using resumeups.Server.Services;
 
-namespace cvups.Server.Utils
+namespace resumeups.Server.Utils
 {
     public static class ServiceRegistration
     {

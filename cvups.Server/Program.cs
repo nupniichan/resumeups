@@ -1,4 +1,4 @@
-using cvups.Server.Utils;
+using resumeups.Server.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 

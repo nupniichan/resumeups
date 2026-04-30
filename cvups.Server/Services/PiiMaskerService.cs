@@ -1,7 +1,7 @@
-﻿using cvups.Server.Interfaces;
+﻿using resumeups.Server.Interfaces;
 using System.Text.RegularExpressions;
 
-namespace cvups.Server.Services
+namespace resumeups.Server.Services
 {
     public class PiiMaskerService : IPiiMasker
     {

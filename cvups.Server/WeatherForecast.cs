@@ -1,4 +1,4 @@
-namespace cvups.Server
+namespace resumeups.Server
 {
     public class WeatherForecast
     {

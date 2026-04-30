@@ -1,4 +1,4 @@
-﻿namespace cvups.Server.Interfaces
+﻿namespace resumeups.Server.Interfaces
 {
     public interface IPiiMasker
     {
@@ -10,6 +10,6 @@
         public string MaskPortfolioWebsite(string input);
         public string MaskGitHub(string input);
 
-        public string MaskAll(string cvtext);
+        public string MaskAll(string resumetext);
     }
 }

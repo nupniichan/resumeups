@@ -1,4 +1,4 @@
-﻿namespace cvups.Server.Utils
+﻿namespace resumeups.Server.Utils
 {
     public class TextNormalizeHelper
     {

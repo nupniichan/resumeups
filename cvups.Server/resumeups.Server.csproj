@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <SpaRoot>..\cvups.client</SpaRoot>
+    <SpaRoot>..\resumeups.client</SpaRoot>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:64980</SpaProxyServerUrl>
     <AcceptNPOIOSMFLicense>true</AcceptNPOIOSMFLicense>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\cvups.client\cvups.client.esproj">
+    <ProjectReference Include="..\resumeups.client\resumeups.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

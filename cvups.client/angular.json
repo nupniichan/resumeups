@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "cvups.client": {
+    "resumeups.client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -67,10 +67,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "cvups.client:build:production"
+              "buildTarget": "resumeups.client:build:production"
             },
             "development": {
-              "buildTarget": "cvups.client:build:development"
+              "buildTarget": "resumeups.client:build:development"
             }
           },
           "defaultConfiguration": "development",

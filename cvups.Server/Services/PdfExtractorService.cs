@@ -1,9 +1,9 @@
-﻿using cvups.Server.Interfaces;
+﻿using resumeups.Server.Interfaces;
 using UglyToad.PdfPig;
 
-namespace cvups.Server.Services
+namespace resumeups.Server.Services
 {
-    public class PDFCVExtractorService : IResumeExtractor
+    public class PdfExtractorService : IResumeExtractor
     {
         public bool extensionType(string extension)
         {
