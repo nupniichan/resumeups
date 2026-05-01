@@ -1,4 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../core/i18n/language.service';
 import { resumeCheckerTranslations } from '../../i18n/resume-checker.i18n';
 import { ScrollRevealDirective } from '../home/reveal.directive';
@@ -6,7 +7,7 @@ import { ScrollRevealDirective } from '../home/reveal.directive';
 @Component({
   selector: 'app-resume-checker',
   standalone: true,
-  imports: [ScrollRevealDirective],
+  imports: [ScrollRevealDirective, RouterLink],
   templateUrl: './resume-checker.html'
 })
 export class ResumeCheckerPage {
@@ -17,6 +18,8 @@ export class ResumeCheckerPage {
   readonly jdInput = signal('');
   readonly fileError = signal('');
   readonly jdError = signal('');
+  readonly consentError = signal('');
+  readonly termsAccepted = signal(false);
   readonly showResult = signal(false);
   readonly openedFaqIndex = signal<number | null>(0);
 
@@ -61,6 +64,14 @@ export class ResumeCheckerPage {
     this.showResult.set(false);
   }
 
+  onTermsAcceptedChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.termsAccepted.set(inputElement.checked);
+    if (inputElement.checked) {
+      this.consentError.set('');
+    }
+  }
+
   onSubmit(): void {
     const jdValue = this.jdInput().trim();
     let isValid = true;
@@ -75,6 +86,11 @@ export class ResumeCheckerPage {
       isValid = false;
     }
 
+    if (!this.termsAccepted()) {
+      this.consentError.set(this.text().form.consentRequiredError);
+      isValid = false;
+    }
+
     if (!isValid) {
       this.showResult.set(false);
       return;
@@ -82,6 +98,7 @@ export class ResumeCheckerPage {
 
     this.jdError.set('');
     this.fileError.set('');
+    this.consentError.set('');
     this.showResult.set(true);
   }
 

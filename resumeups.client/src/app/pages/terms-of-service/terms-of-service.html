@@ -1,0 +1,42 @@
+<div class="min-h-screen bg-gradient-to-b from-[#f7fafd] via-white to-[#f7fafd]">
+  <div class="h-1 bg-gradient-to-r from-[#c6d8ea] via-[#4f8fb8] to-[#c6d8ea]"></div>
+
+  <main class="mx-auto w-full max-w-4xl px-4 pb-16 pt-12 sm:px-6 lg:px-8 lg:pt-16">
+    <header scrollReveal="fade-up" [revealDuration]="650" class="space-y-4 text-center">
+      <h1 class="text-2xl font-bold tracking-tight text-[#1a3656] sm:text-3xl">
+        {{ text().pageTitle }}
+      </h1>
+      <p class="text-sm leading-7 text-[#2d5279]/90 sm:text-base">
+        {{ text().pageDescription }}
+      </p>
+      <p class="text-xs font-semibold uppercase tracking-[0.08em] text-[#4f8fb8]">
+        {{ text().effectiveDateLabel }}: {{ text().effectiveDateValue }}
+      </p>
+    </header>
+
+    <section
+      scrollReveal="fade-up"
+      [revealDelay]="80"
+      [revealDuration]="650"
+      class="mt-8"
+    >
+      <div class="space-y-6">
+        @for (section of text().sections; track section.title) {
+          <article class="space-y-3">
+            <h2 class="text-base font-semibold text-[#1a3656] sm:text-lg">{{ section.title }}</h2>
+            <div class="space-y-2 text-sm leading-7 text-[#2d5279]/90">
+              @for (paragraph of section.paragraphs; track paragraph) {
+                <p>{{ paragraph }}</p>
+              }
+            </div>
+          </article>
+        }
+        <article class="space-y-3">
+          <h2 class="text-base font-semibold text-[#1a3656] sm:text-lg">{{ text().contact.title }}</h2>
+          <p class="text-sm leading-7 text-[#2d5279]/90">{{ text().contact.description }}</p>
+          <p class="text-sm font-medium text-[#1a3656]">{{ text().contact.emailLabel }}: {{ text().contact.email }}</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</div>

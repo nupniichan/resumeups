@@ -28,6 +28,9 @@ interface ResumeCheckerTranslation {
     submitButton: string;
     invalidFileError: string;
     requiredJdError: string;
+    consentLabelPrefix: string;
+    consentLabelLink: string;
+    consentRequiredError: string;
   };
   result: {
     title: string;
@@ -67,7 +70,10 @@ export const resumeCheckerTranslations: LanguageDictionary<ResumeCheckerTranslat
       jdPlaceholder: 'Paste the full job description here...',
       submitButton: 'View result',
       invalidFileError: 'Please upload a valid PDF, DOC, or DOCX file.',
-      requiredJdError: 'Please enter a job description before viewing results.'
+      requiredJdError: 'Please enter a job description before viewing results.',
+      consentLabelPrefix: 'I have read and agree to the',
+      consentLabelLink: 'Terms of Service',
+      consentRequiredError: 'Please read and agree to the Terms of Service before continuing.'
     },
     result: {
       title: 'Result',
@@ -118,7 +124,10 @@ export const resumeCheckerTranslations: LanguageDictionary<ResumeCheckerTranslat
       jdPlaceholder: 'Dán đầy đủ nội dung JD vào đây...',
       submitButton: 'Xem kết quả',
       invalidFileError: 'Vui lòng tải lên tệp PDF, DOC hoặc DOCX hợp lệ.',
-      requiredJdError: 'Vui lòng nhập mô tả công việc trước khi xem kết quả.'
+      requiredJdError: 'Vui lòng nhập mô tả công việc trước khi xem kết quả.',
+      consentLabelPrefix: 'Tôi đã đọc và đồng ý với',
+      consentLabelLink: 'Điều khoản dịch vụ',
+      consentRequiredError: 'Vui lòng đọc và đồng ý với Điều khoản dịch vụ trước khi tiếp tục.'
     },
     result: {
       title: 'Kết quả',

@@ -6,6 +6,7 @@ interface FooterTranslation {
     home: string;
     resume: string;
     about: string;
+    terms: string;
   };
   social: {
     github: string;
@@ -20,7 +21,8 @@ export const footerTranslations: LanguageDictionary<FooterTranslation> = {
     nav: {
       home: 'Home',
       resume: 'Resume',
-      about: 'About'
+      about: 'About',
+      terms: 'Terms'
     },
     social: {
       github: 'GitHub',
@@ -33,7 +35,8 @@ export const footerTranslations: LanguageDictionary<FooterTranslation> = {
     nav: {
       home: 'Trang chủ',
       resume: 'Kiểm tra',
-      about: 'Giới thiệu'
+      about: 'Giới thiệu',
+      terms: 'Điều khoản'
     },
     social: {
       github: 'GitHub',
