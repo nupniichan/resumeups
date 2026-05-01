@@ -27,7 +27,7 @@ export const headerTranslations: LanguageDictionary<HeaderTranslation> = {
   vi: {
     nav: {
       home: 'Trang chủ',
-      resume: 'Hồ sơ',
+      resume: 'Kiểm tra',
       about: 'Giới thiệu'
     },
     languageSwitcher: {

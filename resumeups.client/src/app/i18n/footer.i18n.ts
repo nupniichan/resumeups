@@ -32,7 +32,7 @@ export const footerTranslations: LanguageDictionary<FooterTranslation> = {
     tagline: 'Tăng tỷ lệ được gọi phỏng vấn cùng ResumeUps',
     nav: {
       home: 'Trang chủ',
-      resume: 'Hồ sơ',
+      resume: 'Kiểm tra',
       about: 'Giới thiệu'
     },
     social: {
