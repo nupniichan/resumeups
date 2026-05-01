@@ -1,3 +1,28 @@
-<footer>
-  By me of course
+<footer class="border-t border-[#c6d8ea] bg-[#f7fafd]/95 backdrop-blur-sm">
+  <div class="h-0.5 bg-gradient-to-r from-[#c6d8ea] via-[#4f8fb8] to-[#c6d8ea]"></div>
+
+  <div class="mx-auto grid w-full max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-3 lg:px-8">
+    <div>
+      <a routerLink="/home" class="inline-flex items-center tracking-tight">
+        <span class="font-serif text-[19px] font-normal text-[#1a3656]">resume</span>
+        <span class="font-serif text-[19px] font-bold text-[#4f8fb8]">ups</span>
+      </a>
+      <p class="mt-2 text-sm text-[#2d5279]/80">{{ text().tagline }}</p>
+    </div>
+
+    <nav class="flex flex-wrap items-center gap-4 lg:justify-center">
+      <a routerLink="/home" class="text-sm text-[#2d5279] transition-colors hover:text-[#1a3656]">{{ text().nav.home }}</a>
+      <a routerLink="/resume" class="text-sm text-[#2d5279] transition-colors hover:text-[#1a3656]">{{ text().nav.resume }}</a>
+      <a routerLink="/about" class="text-sm text-[#2d5279] transition-colors hover:text-[#1a3656]">{{ text().nav.about }}</a>
+    </nav>
+
+    <div class="flex items-center gap-3 lg:justify-end">
+      <a href="#" class="rounded-md border border-[#c6d8ea] px-3 py-1.5 text-sm text-[#2d5279] transition hover:bg-[#c6d8ea]/30">{{ text().social.github }}</a>
+      <a href="#" class="rounded-md border border-[#c6d8ea] px-3 py-1.5 text-sm text-[#2d5279] transition hover:bg-[#c6d8ea]/30">{{ text().social.linkedin }}</a>
+    </div>
+  </div>
+
+  <div class="border-t border-[#c6d8ea]/70 px-4 py-4 text-center text-xs text-[#2d5279]/70 sm:px-6 lg:px-8">
+    {{ text().copyright }}
+  </div>
 </footer>

@@ -1,0 +1,211 @@
+<div class="bg-gradient-to-b from-[#f7fafd] via-white to-[#f7fafd] overflow-hidden">
+
+    <!-- ─── HERO ─────────────────────────────────────────────────────────── -->
+    <section class="mx-auto w-full max-w-7xl px-4 pb-16 pt-16 sm:px-6 lg:px-8 lg:pb-20 lg:pt-24">
+      <div class="mx-auto max-w-3xl text-center">
+  
+        <h1
+          scrollReveal="fade-up"
+          [revealDuration]="700"
+          class="mt-5 text-4xl font-bold tracking-tight text-[#1a3656] sm:text-5xl lg:text-6xl"
+        >
+          {{ text().hero.titlePrefix }}
+          <span class="mt-2 block">
+            <span class="font-serif font-normal text-[#1a3656]">{{ text().hero.titleBrandNormal }}</span>
+            <span class="font-serif font-bold text-[#4f8fb8]">{{ text().hero.titleBrandBold }}</span>
+          </span>
+        </h1>
+  
+        <p
+          scrollReveal="fade-up"
+          [revealDelay]="150"
+          [revealDuration]="700"
+          class="mx-auto mt-5 max-w-xl text-base leading-7 text-[#2d5279]/90 sm:text-lg"
+        >
+          {{ text().hero.description }}
+        </p>
+  
+        <div
+          scrollReveal="fade-up"
+          [revealDelay]="280"
+          [revealDuration]="700"
+          class="mt-8 flex flex-wrap items-center justify-center gap-3"
+        >
+          <a
+            routerLink="/resume"
+            class="rounded-md bg-[#1a3656] px-6 py-3 text-sm font-semibold text-white
+                   transition-all duration-200 hover:bg-[#16304c] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#1a3656]/20"
+          >
+            {{ text().hero.primaryCta }}
+          </a>
+          <a
+            href="#how-it-works"
+            class="rounded-md border border-[#c6d8ea] px-6 py-3 text-sm font-semibold text-[#1a3656]
+                   transition-all duration-200 hover:bg-[#c6d8ea]/25 hover:-translate-y-0.5"
+          >
+            {{ text().hero.secondaryCta }}
+          </a>
+        </div>
+  
+      </div>
+    </section>
+  
+    <!-- ─── PROBLEM / SOLUTION ───────────────────────────────────────────── -->
+    <section class="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+  
+      <div scrollReveal="fade-up" class="mb-10">
+        <h2 class="text-3xl font-bold tracking-tight text-[#1a3656] sm:text-4xl">
+          {{ text().problemSolution.title }}
+        </h2>
+        <p class="mt-3 text-base text-[#2d5279]/90">
+          {{ text().problemSolution.description }}
+        </p>
+      </div>
+  
+      <div class="grid gap-6 lg:grid-cols-2">
+  
+        <article
+          scrollReveal="fade-right"
+          [revealDelay]="100"
+          class="rounded-2xl border border-[#c6d8ea] bg-white p-6
+                 transition-shadow duration-300 hover:shadow-lg hover:shadow-[#c6d8ea]/50"
+        >
+          <p class="text-xs font-semibold uppercase tracking-wide text-[#4f8fb8]">
+            {{ text().problemSolution.problemTitle }}
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-[#2d5279]/90">
+            @for (item of text().problemSolution.problemItems; track item) {
+              <li>- {{ item }}</li>
+            }
+          </ul>
+        </article>
+  
+        <article
+          scrollReveal="fade-left"
+          [revealDelay]="200"
+          class="rounded-2xl border border-[#c6d8ea] bg-[#f7fafd] p-6
+                 transition-shadow duration-300 hover:shadow-lg hover:shadow-[#c6d8ea]/50"
+        >
+          <p class="text-xs font-semibold uppercase tracking-wide text-[#4f8fb8]">
+            {{ text().problemSolution.solutionTitle }}
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-[#2d5279]/90">
+            @for (item of text().problemSolution.solutionItems; track item) {
+              <li>- {{ item }}</li>
+            }
+          </ul>
+        </article>
+  
+      </div>
+    </section>
+  
+    <!-- ─── HOW IT WORKS ─────────────────────────────────────────────────── -->
+    <section id="how-it-works" class="border-y border-[#c6d8ea] bg-white">
+      <div class="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+  
+        <div scrollReveal="fade-up">
+          <h2 class="text-3xl font-bold tracking-tight text-[#1a3656] sm:text-4xl">
+            {{ text().howItWorks.title }}
+          </h2>
+          <p class="mt-3 max-w-2xl text-base text-[#2d5279]/90">
+            {{ text().howItWorks.description }}
+          </p>
+        </div>
+  
+        <div class="mt-10 grid gap-6 md:grid-cols-3">
+          @for (step of text().howItWorks.steps; track $index) {
+            <article
+              scrollReveal="zoom-in"
+              [revealDelay]="$index * 120"
+              [revealThreshold]="0.1"
+              class="rounded-2xl border border-[#c6d8ea] p-6
+                     transition-shadow duration-300 hover:shadow-xl hover:shadow-[#4f8fb8]/10
+                     hover:-translate-y-1 hover:border-[#4f8fb8]/40"
+              style="transition-property: box-shadow, border-color, transform;"
+            >
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#c6d8ea]/35 text-sm font-bold text-[#1a3656]">
+                {{ $index + 1 }}
+              </span>
+              <h3 class="mt-4 text-lg font-semibold text-[#1a3656]">{{ step.title }}</h3>
+              <p class="mt-2 text-sm text-[#2d5279]/90">{{ step.description }}</p>
+            </article>
+          }
+        </div>
+  
+      </div>
+    </section>
+  
+    <!-- ─── FEATURES ─────────────────────────────────────────────────────── -->
+    <section class="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+  
+      <div scrollReveal="fade-up">
+        <h2 class="text-3xl font-bold tracking-tight text-[#1a3656] sm:text-4xl">
+          {{ text().features.title }}
+        </h2>
+        <p class="mt-3 max-w-2xl text-base text-[#2d5279]/90">
+          {{ text().features.description }}
+        </p>
+      </div>
+  
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        @for (item of text().features.items; track item.title) {
+          <article
+            scrollReveal="fade-up"
+            [revealDelay]="($index % 3) * 100"
+            [revealThreshold]="0.1"
+            class="rounded-xl border border-[#c6d8ea] bg-white p-5
+                   transition-all duration-300 hover:shadow-md hover:shadow-[#4f8fb8]/10
+                   hover:-translate-y-0.5 hover:border-[#4f8fb8]/30"
+          >
+            <h3 class="text-base font-semibold text-[#1a3656]">{{ item.title }}</h3>
+            <p class="mt-2 text-sm text-[#2d5279]/85">{{ item.description }}</p>
+          </article>
+        }
+      </div>
+  
+    </section>
+  
+    <!-- ─── FINAL CTA ─────────────────────────────────────────────────────── -->
+    <section class="border-t border-[#c6d8ea] bg-[#f7fafd]">
+      <div class="mx-auto w-full max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8 lg:py-20">
+  
+        <h2
+          scrollReveal="fade-up"
+          class="text-3xl font-bold tracking-tight text-[#1a3656] sm:text-4xl"
+        >
+          {{ text().finalCta.title }}
+        </h2>
+  
+        <p
+          scrollReveal="fade-up"
+          [revealDelay]="120"
+          class="mx-auto mt-3 max-w-2xl text-base text-[#2d5279]/90"
+        >
+          {{ text().finalCta.description }}
+        </p>
+  
+        <div
+          scrollReveal="fade-up"
+          [revealDelay]="240"
+          class="mt-8 flex flex-wrap items-center justify-center gap-3"
+        >
+          <a
+            routerLink="/resume"
+            class="rounded-md bg-[#1a3656] px-6 py-3 text-sm font-semibold text-white
+                   transition-all duration-200 hover:bg-[#16304c] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#1a3656]/20"
+          >
+            {{ text().finalCta.primaryCta }}
+          </a>
+          <a
+            routerLink="/about"
+            class="rounded-md border border-[#c6d8ea] px-6 py-3 text-sm font-semibold text-[#1a3656]
+                   transition-all duration-200 hover:bg-[#c6d8ea]/25 hover:-translate-y-0.5"
+          >
+            {{ text().finalCta.secondaryCta }}
+          </a>
+        </div>
+  
+      </div>
+    </section>
+  
+  </div>

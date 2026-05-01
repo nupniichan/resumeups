@@ -1,5 +1,69 @@
-<header>
-  <h1>My App</h1>
-  <a routerLink="/home">Home</a>
-  <a routerLink="/resume">Resume</a>
+<header class="sticky top-0 z-50 border-b border-[#c6d8ea] bg-[#f7fafd]/95 backdrop-blur-sm">
+  <div class="h-0.5 bg-gradient-to-r from-[#c6d8ea] via-[#4f8fb8] to-[#c6d8ea]"></div>
+  <div class="mx-auto flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:px-8">
+    <a routerLink="/home" class="group inline-flex items-center tracking-tight">
+      <span class="font-serif text-[19px] font-normal text-[#1a3656] transition-colors group-hover:text-[#2d5279]">Resume</span><span class="font-serif text-[19px] font-bold text-[#4f8fb8] transition-colors group-hover:text-[#2d5279]">Ups</span>
+    </a>
+
+    <div class="flex items-center gap-3">
+      <nav class="flex items-center gap-1">
+      <a
+        routerLink="/home"
+        routerLinkActive="!text-[#1a3656] bg-[#c6d8ea]/30"
+        class="relative rounded-md px-3.5 py-2 text-sm font-medium tracking-wide text-[#2d5279] transition-colors
+               hover:text-[#1a3656]
+               after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-[1.5px]
+               after:rounded-full after:bg-[#4f8fb8]
+               after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-200"
+      >
+        {{ text().nav.home }}
+      </a>
+      <a
+        routerLink="/resume"
+        routerLinkActive="!text-[#1a3656] bg-[#c6d8ea]/30"
+        class="relative rounded-md px-3.5 py-2 text-sm font-medium tracking-wide text-[#2d5279] transition-colors
+               hover:text-[#1a3656]
+               after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-[1.5px]
+               after:rounded-full after:bg-[#4f8fb8]
+               after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-200"
+      >
+        {{ text().nav.resume }}
+      </a>
+      <a
+        routerLink="/about"
+        routerLinkActive="!text-[#1a3656] bg-[#c6d8ea]/30"
+        class="relative rounded-md px-3.5 py-2 text-sm font-medium tracking-wide text-[#2d5279] transition-colors
+               hover:text-[#1a3656]
+               after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-[1.5px]
+               after:rounded-full after:bg-[#4f8fb8]
+               after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-200"
+      >
+        {{ text().nav.about }}
+      </a>
+      </nav>
+
+      <div class="flex items-center rounded-md border border-[#c6d8ea] bg-white p-0.5">
+        <button
+          type="button"
+          (click)="setLanguage('vi')"
+          [class.bg-[#1a3656]]="currentLanguage() === 'vi'"
+          [class.text-white]="currentLanguage() === 'vi'"
+          [class.text-[#2d5279]]="currentLanguage() !== 'vi'"
+          class="rounded px-2.5 py-1 text-xs font-semibold tracking-wide transition-colors"
+        >
+          {{ text().languageSwitcher.vi }}
+        </button>
+        <button
+          type="button"
+          (click)="setLanguage('en')"
+          [class.bg-[#1a3656]]="currentLanguage() === 'en'"
+          [class.text-white]="currentLanguage() === 'en'"
+          [class.text-[#2d5279]]="currentLanguage() !== 'en'"
+          class="rounded px-2.5 py-1 text-xs font-semibold tracking-wide transition-colors"
+        >
+          {{ text().languageSwitcher.en }}
+        </button>
+      </div>
+    </div>
+  </div>
 </header>
