@@ -51,7 +51,7 @@ export const resumeCheckerTranslations: LanguageDictionary<ResumeCheckerTranslat
   en: {
     promo: {
       title: 'Check Your Resume',
-      subtitle: 'And Get a Free Job Tracking Template',
+      subtitle: 'And get a score to know how well it matches the target job description (ATS-fit).',
       description: 'ResumeUps evaluate your resume based on how well it matches the target job description.'
     },
     hero: {
@@ -105,7 +105,7 @@ export const resumeCheckerTranslations: LanguageDictionary<ResumeCheckerTranslat
   vi: {
     promo: {
       title: 'Kiểm Tra CV Của Bạn',
-      subtitle: 'Và Nhận Ngay Job Tracking Template Miễn Phí',
+      subtitle: 'Và Nhận Ngay Điểm Phù Hợp (ATS-fit) Của CV Của Bạn',
       description: 'ResumeUps sẽ đánh giá CV của bạn dựa trên mức độ phù hợp với mô tả công việc'
     },
     hero: {
