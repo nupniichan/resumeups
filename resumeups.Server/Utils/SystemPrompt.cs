@@ -136,6 +136,10 @@ namespace resumeups.Server.Utils
           ]
         }
 
+        ### WRITING STYLE — MANDATORY
+        - Address the user directly as ""you"" (NOT ""the candidate"")
+        - Use second-person perspective consistently
+        - Do not refer to the user in third person under any circumstances
         ---
 
         ### INPUT DATA
