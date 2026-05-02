@@ -1,5 +1,7 @@
 using resumeups.Server.Utils;
 
+EnvReader.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddServices();
