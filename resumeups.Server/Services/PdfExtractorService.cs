@@ -3,7 +3,7 @@ using UglyToad.PdfPig;
 
 namespace resumeups.Server.Services
 {
-    public class PdfExtractorService : IResumeExtractor
+    public class PdfExtractorService : IResumeExtractorService
     {
         public bool extensionType(string extension)
         {

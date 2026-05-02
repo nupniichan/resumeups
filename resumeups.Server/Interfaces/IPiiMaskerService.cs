@@ -1,6 +1,6 @@
 ﻿namespace resumeups.Server.Interfaces
 {
-    public interface IPiiMasker
+    public interface IPiiMaskerService
     {
         public string MaskEmail(string input);
         public string MaskPhoneNumber(string input);

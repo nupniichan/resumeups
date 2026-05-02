@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace resumeups.Server.Services
 {
-    public class PiiMaskerService : IPiiMasker
+    public class PiiMaskerService : IPiiMaskerService
     {
         public string MaskEmail(string input) =>
             Regex.Replace(input,

@@ -3,7 +3,7 @@ using NPOI.XWPF.UserModel;
 
 namespace resumeups.Server.Services
 {
-    public class WordExtractorService : IResumeExtractor
+    public class WordExtractorService : IResumeExtractorService
     {
         public bool extensionType(string extension)
         {

@@ -8,10 +8,10 @@ namespace resumeups.Server.Controllers
     [Route("[controller]")]
     public class ResumeExtractorController : ControllerBase
     {
-        private readonly IEnumerable<IResumeExtractor> _extractors;
-        private readonly IPiiMasker _piiMasker;
+        private readonly IEnumerable<IResumeExtractorService> _extractors;
+        private readonly IPiiMaskerService _piiMasker;
 
-        public ResumeExtractorController(IEnumerable<IResumeExtractor> extractors, IPiiMasker piiMasker)
+        public ResumeExtractorController(IEnumerable<IResumeExtractorService> extractors, IPiiMaskerService piiMasker)
         {
             _extractors = extractors;
             _piiMasker = piiMasker;

@@ -7,9 +7,9 @@ namespace resumeups.Server.Utils
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IResumeExtractor, PdfExtractorService>();
-            services.AddScoped<IResumeExtractor, WordExtractorService>();
-            services.AddScoped<IPiiMasker, PiiMaskerService>();
+            services.AddScoped<IResumeExtractorService, PdfExtractorService>();
+            services.AddScoped<IResumeExtractorService, WordExtractorService>();
+            services.AddScoped<IPiiMaskerService, PiiMaskerService>();
 
             return services;
         }
