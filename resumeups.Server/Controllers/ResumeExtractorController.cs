@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using resumeups.Server.Interfaces;
 using resumeups.Server.Utils;
 
 namespace resumeups.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ResumeExtractorController : ControllerBase
     {
         private readonly IEnumerable<IResumeExtractorService> _extractors;
