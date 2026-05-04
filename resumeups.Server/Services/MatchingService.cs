@@ -61,20 +61,40 @@ namespace resumeups.Server.Services
             using var resultDoc = JsonDocument.Parse(contentText);
             var root = resultDoc.RootElement;
 
+            var keywordsMatching = root.GetProperty("keywords_matching")
+                .EnumerateArray()
+                .Select(e => e.GetString() ?? "")
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            var keywordsMissing = root.GetProperty("keywords_missing")
+                .EnumerateArray()
+                .Select(e => e.GetString() ?? "")
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            var matchScore = CalculateMatchScore(keywordsMatching.Count, keywordsMissing.Count);
+
             var result = new MatchingResult
             {
-                MatchScore = root.GetProperty("match_score").GetInt32(),
-                KeywordsMatching = root.GetProperty("keywords_matching")
-                    .EnumerateArray()
-                    .Select(e => e.GetString() ?? "")
-                    .ToList(),
-                KeywordsMissing = root.GetProperty("keywords_missing")
-                    .EnumerateArray()
-                    .Select(e => e.GetString() ?? "")
-                    .ToList()
+                MatchScore = matchScore,
+                KeywordsMatching = keywordsMatching,
+                KeywordsMissing = keywordsMissing
             };
 
             return result;
+        }
+
+        private static int CalculateMatchScore(int matchedCount, int missingCount)
+        {
+            var total = matchedCount + missingCount;
+            if (total == 0)
+                return 0;
+
+            var score = (double)matchedCount / total * 100;
+            return (int)Math.Round(score, MidpointRounding.AwayFromZero);
         }
 
         private static string CleanJsonResponse(string text)

@@ -66,6 +66,8 @@ namespace resumeups.Server.Services
 
             var issues = new List<string>();
             var suggestions = new List<string>();
+            var contextScore = ReadInt(root, "context_score");
+            var impactScore = ReadInt(root, "impact_score");
 
             if (root.TryGetProperty("issues", out var issuesArray))
             {
@@ -74,17 +76,20 @@ namespace resumeups.Server.Services
                     var category = item.TryGetProperty("category", out var cat) ? cat.GetString() : "";
                     var severity = item.TryGetProperty("severity", out var sev) ? sev.GetString() : "";
                     var issue = item.TryGetProperty("issue", out var iss) ? iss.GetString() : "";
-                    var suggestion = item.TryGetProperty("suggestion", out var sug) ? sug.GetString() : "";
+                    var before = item.TryGetProperty("before", out var bef) ? bef.GetString() : "";
+                    var after = item.TryGetProperty("after", out var aft) ? aft.GetString() : "";
 
                     issues.Add($"[{severity}] [{category}] {issue}");
-                    if (!string.IsNullOrWhiteSpace(suggestion))
-                        suggestions.Add($"[{category}] {suggestion}");
+                    if (!string.IsNullOrWhiteSpace(before) || !string.IsNullOrWhiteSpace(after))
+                        suggestions.Add($"[{category}] Before: {before} -> After: {after}");
                 }
             }
 
+            var feedbackScore = CalculateFeedbackScore(matching.MatchScore, contextScore, impactScore);
+
             var result = new FeedbackResult
             {
-                FeedbackScore = root.GetProperty("feedback_score").GetInt32(),
+                FeedbackScore = feedbackScore,
                 Summary = root.GetProperty("summary").GetString() ?? "",
                 Issues = issues,
                 Suggestions = suggestions
@@ -103,6 +108,20 @@ namespace resumeups.Server.Services
             if (text.EndsWith("```"))
                 text = text[..^3];
             return text.Trim();
+        }
+
+        private static int ReadInt(JsonElement root, string propertyName)
+        {
+            if (root.TryGetProperty(propertyName, out var value) && value.ValueKind == JsonValueKind.Number)
+                return Math.Clamp(value.GetInt32(), 0, 100);
+
+            return 0;
+        }
+
+        private static int CalculateFeedbackScore(int matchScore, int contextScore, int impactScore)
+        {
+            var weightedScore = matchScore * 0.5 + contextScore * 0.25 + impactScore * 0.25;
+            return (int)Math.Round(weightedScore, MidpointRounding.AwayFromZero);
         }
     }
 }
