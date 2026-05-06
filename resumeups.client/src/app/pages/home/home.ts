@@ -98,12 +98,10 @@ export class HomePage implements AfterViewInit, OnDestroy {
     const step1Panel = root.querySelector('.hiw-step-1-panel') as HTMLElement | null;
     const step2Panel = root.querySelector('.hiw-step-2-panel') as HTMLElement | null;
     const step3Panel = root.querySelector('.hiw-step-3-panel') as HTMLElement | null;
-    const featuresSection = root.querySelector('.features-scroll-section') as HTMLElement | null;
 
     if (step1Panel) this.buildStep1(step1Panel);
     if (step2Panel) this.buildStep2(step2Panel);
     if (step3Panel) this.buildStep3(step3Panel);
-    if (featuresSection) this.buildFeatures(featuresSection);
 
     ScrollTrigger.refresh();
   }
@@ -308,35 +306,4 @@ export class HomePage implements AfterViewInit, OnDestroy {
     this.register(st);
   }
 
-  private buildFeatures(section: HTMLElement): void {
-    const pinWrap = section.querySelector('.features-pin-wrap') as HTMLElement | null;
-    const cards = section.querySelectorAll('.feature-card') as NodeListOf<HTMLElement>;
-
-    if (!pinWrap || !cards.length) return;
-
-    gsap.set(cards, { y: 56, opacity: 0, transformOrigin: '50% 50%' });
-
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.to(cards, { y: 0, opacity: 1, duration: 0.55, stagger: 0.12 }, 0).to(
-      cards,
-      {
-        borderColor: '#4f8fb8',
-        boxShadow: '0 12px 32px rgba(79,143,184,0.12)',
-        duration: 0.35,
-        stagger: 0.08
-      },
-      0.25
-    );
-
-    const st = ScrollTrigger.create({
-      trigger: pinWrap,
-      start: 'top top',
-      end: '+=160%',
-      pin: true,
-      scrub: 1,
-      animation: tl,
-      anticipatePin: 1
-    });
-    this.register(st);
-  }
 }
