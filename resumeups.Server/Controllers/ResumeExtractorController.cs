@@ -8,6 +8,7 @@ namespace resumeups.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Route("api/resume-extractions")]
     public class ResumeExtractorController : ControllerBase
     {
         private readonly IEnumerable<IResumeExtractorService> _extractors;
@@ -21,6 +22,7 @@ namespace resumeups.Server.Controllers
             _security = security.Value;
         }
 
+        [HttpPost]
         [HttpPost("extract")]
         [Consumes("multipart/form-data")]
         public async Task<ActionResult<string>> ExtractAndMaskPII(IFormFile file)

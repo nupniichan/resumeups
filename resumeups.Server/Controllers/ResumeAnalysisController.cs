@@ -6,6 +6,7 @@ namespace resumeups.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Route("api/resume-analyses")]
     public class ResumeAnalysisController : ControllerBase
     {
         private readonly IAnalyzeService _analyzeService;
@@ -13,6 +14,7 @@ namespace resumeups.Server.Controllers
         {
             _analyzeService = analyzeService;
         }
+        [HttpPost]
         [HttpPost("analyze")]
         public async Task<IActionResult> Analyze([FromBody] AnalyzeRequest request)
         {
