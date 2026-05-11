@@ -47,12 +47,19 @@ namespace resumeups.Server.Services
                     var category = item.TryGetProperty("category", out var cat) ? cat.GetString() : "";
                     var severity = item.TryGetProperty("severity", out var sev) ? sev.GetString() : "";
                     var issue = item.TryGetProperty("issue", out var iss) ? iss.GetString() : "";
-                    var before = item.TryGetProperty("before", out var bef) ? bef.GetString() : "";
-                    var after = item.TryGetProperty("after", out var aft) ? aft.GetString() : "";
 
                     issues.Add($"[{severity}] [{category}] {issue}");
-                    if (!string.IsNullOrWhiteSpace(before) || !string.IsNullOrWhiteSpace(after))
-                        suggestions.Add($"[{category}] Before: {before} -> After: {after}");
+                }
+            }
+
+            if (root.TryGetProperty("suggestions", out var suggestionsArray))
+            {
+                foreach (var item in suggestionsArray.EnumerateArray())
+                {
+                    var severity = item.TryGetProperty("severity", out var sev) ? sev.GetString() : "";
+                    var suggestion = item.TryGetProperty("suggestion", out var sug) ? sug.GetString() : "";
+
+                    suggestions.Add($"[{severity}] {suggestion}");
                 }
             }
 
