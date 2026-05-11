@@ -26,20 +26,22 @@ interface ResumeCheckerTranslation {
     jdLabel: string;
     jdPlaceholder: string;
     submitButton: string;
+    loadingButton: string;
     invalidFileError: string;
     requiredJdError: string;
+    apiError: string;
     consentLabelPrefix: string;
     consentLabelLink: string;
     consentRequiredError: string;
   };
   result: {
     title: string;
-    summary: string;
     matchScoreLabel: string;
-    strengthsTitle: string;
-    strengths: string[];
-    improvementsTitle: string;
-    improvements: string[];
+    keywordsMatchingTitle: string;
+    keywordsMissingTitle: string;
+    feedbackTitle: string;
+    issuesTitle: string;
+    suggestionsTitle: string;
   };
   faq: {
     title: string;
@@ -69,28 +71,22 @@ export const resumeCheckerTranslations: LanguageDictionary<ResumeCheckerTranslat
       jdLabel: 'Job description (JD)',
       jdPlaceholder: 'Paste the full job description here...',
       submitButton: 'View result',
+      loadingButton: 'Analyzing...',
       invalidFileError: 'Please upload a valid PDF, DOC, or DOCX file.',
       requiredJdError: 'Please enter a job description before viewing results.',
+      apiError: 'Something went wrong while analyzing your resume. Please try again.',
       consentLabelPrefix: 'I have read and agree to the',
       consentLabelLink: 'Terms of Service',
       consentRequiredError: 'Please read and agree to the Terms of Service before continuing.'
     },
     result: {
       title: 'Result',
-      summary: 'This is a sample result, will be updated with the actual result from the API',
       matchScoreLabel: 'Estimated ATS fit',
-      strengthsTitle: 'Strengths',
-      strengths: [
-        'Your resume includes core keywords from the target role.',
-        'Work experience section is clear and easy to scan.',
-        'Technical skills are listed with good coverage.'
-      ],
-      improvementsTitle: 'Suggested improvements',
-      improvements: [
-        'Add more measurable impact for recent projects.',
-        'Align role-specific keywords with the JD requirements.',
-        'Reorder sections to prioritize the most relevant experience.'
-      ]
+      keywordsMatchingTitle: 'Keywords matching',
+      keywordsMissingTitle: 'Keywords missing',
+      feedbackTitle: 'Alignment feedback',
+      issuesTitle: 'Issues',
+      suggestionsTitle: 'Suggestions'
     },
     faq: {
       title: 'Frequently asked questions',
@@ -123,28 +119,22 @@ export const resumeCheckerTranslations: LanguageDictionary<ResumeCheckerTranslat
       jdLabel: 'Mô tả công việc (JD)',
       jdPlaceholder: 'Dán đầy đủ nội dung JD vào đây...',
       submitButton: 'Xem kết quả',
+      loadingButton: 'Đang phân tích...',
       invalidFileError: 'Vui lòng tải lên tệp PDF, DOC hoặc DOCX hợp lệ.',
       requiredJdError: 'Vui lòng nhập mô tả công việc trước khi xem kết quả.',
+      apiError: 'Đã xảy ra lỗi khi phân tích CV của bạn. Vui lòng thử lại.',
       consentLabelPrefix: 'Tôi đã đọc và đồng ý với',
       consentLabelLink: 'Điều khoản dịch vụ',
       consentRequiredError: 'Vui lòng đọc và đồng ý với Điều khoản dịch vụ trước khi tiếp tục.'
     },
     result: {
       title: 'Kết quả',
-      summary: 'Này là bước tạm thôi nào có api tính tiếp',
       matchScoreLabel: 'Mức độ phù hợp',
-      strengthsTitle: 'Điểm mạnh',
-      strengths: [
-        'CV đã chứa các từ khóa cốt lõi của vị trí ứng tuyển.',
-        'Phần kinh nghiệm trình bày rõ ràng, dễ quét thông tin.',
-        'Kỹ năng chuyên môn được liệt kê với độ bao phủ tốt.'
-      ],
-      improvementsTitle: 'Gợi ý cải thiện',
-      improvements: [
-        'Bổ sung số liệu kết quả cho các dự án gần đây.',
-        'Điều chỉnh từ khóa sát hơn với yêu cầu trong JD.',
-        'Sắp xếp lại thứ tự mục để ưu tiên nội dung liên quan nhất.'
-      ]
+      keywordsMatchingTitle: 'Từ khóa khớp',
+      keywordsMissingTitle: 'Từ khóa thiếu',
+      feedbackTitle: 'Nhận xét tổng quan',
+      issuesTitle: 'Vấn đề',
+      suggestionsTitle: 'Gợi ý'
     },
     faq: {
       title: 'Câu hỏi thường gặp',
