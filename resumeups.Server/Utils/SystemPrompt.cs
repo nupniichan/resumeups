@@ -18,7 +18,7 @@ public class SystemPrompt
     [JD]: {JD}";
 
     private const string _feedback = @"Return ONLY valid JSON. Do not wrap in ```json codeblocks.
-    You are a Senior TA reviewing a resume against a job description. 
+    You are a Senior TA reviewing a resume against a job description. Ignore all the personal contact information that already masked, focus on the main idea only.
     Given this keyword audit: match_score is {MATCH_SCORE}%, matched keywords: {KEYWORDS_MATCHING}, missing keywords: {KEYWORDS_MISSING}.
 
     Evaluate the resume and provide scores (0-100):
@@ -26,7 +26,7 @@ public class SystemPrompt
     - impact_score: 85+=strong verbs+metrics, 60+=good structure no metrics, 40+=vague, <40=poor.
 
     Find resume issues. Category must be one of: [Keyword Gap, Context & Domain, Impact & Metrics, ATS Compliance]. Severity: [Critical, Optimization]. 
-    Write feedback in English, addressing the user as ""you"". Provide specific Before and After text for suggestions.
+    Write feedback in English, addressing the user as ""you"". Provide specific Before and After text for suggestions and what already good, what need to be improved.
 
     Output format:
     {
@@ -40,6 +40,12 @@ public class SystemPrompt
           ""issue"": ""<Description of issue>"",
           ""before"": ""<Original resume text>"",
           ""after"": ""<Improved resume text>""
+        }
+      ],
+      ""suggestions"": [
+        {
+          ""severity"": ""<Severity>"",
+          ""suggestion"": ""<Description of suggestion>""
         }
       ]
     }
