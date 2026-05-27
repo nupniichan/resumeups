@@ -17,19 +17,29 @@ export class ResumeCheckerPage {
   private readonly resumeCheckerService = inject(ResumeCheckerService);
 
   readonly text = computed(() => resumeCheckerTranslations[this.languageService.currentLanguage()]);
-  readonly selectedFileName = signal('');
-  readonly jdInput = signal('');
+  readonly selectedFileName = signal(localStorage.getItem('resumeups_file_name') || '');
+  readonly jdInput = signal(localStorage.getItem('resumeups_jd_input') || '');
   readonly fileError = signal('');
   readonly jdError = signal('');
   readonly consentError = signal('');
   readonly termsAccepted = signal(false);
-  readonly showResult = signal(false);
+  readonly analyzeResult = signal<AnalyzeResult | null>(
+    (() => {
+      try {
+        const cached = localStorage.getItem('resumeups_analyze_result');
+        return cached ? JSON.parse(cached) : null;
+      } catch {
+        return null;
+      }
+    })()
+  );
+  readonly showResult = signal(!!this.analyzeResult());
   readonly isLoading = signal(false);
   readonly apiError = signal('');
-  readonly analyzeResult = signal<AnalyzeResult | null>(null);
   readonly openedFaqIndex = signal<number | null>(0);
 
   private selectedFile: File | null = null;
+  private cachedExtractedText = localStorage.getItem('resumeups_extracted_text') || '';
 
   private readonly acceptedMimeTypes = new Set([
     'application/pdf',
@@ -60,10 +70,19 @@ export class ResumeCheckerPage {
     this.fileError.set('');
     this.showResult.set(false);
     this.apiError.set('');
+    this.analyzeResult.set(null);
+    try {
+      localStorage.removeItem('resumeups_analyze_result');
+    } catch { }
 
     if (!file) {
       this.selectedFileName.set('');
       this.selectedFile = null;
+      this.cachedExtractedText = '';
+      try {
+        localStorage.removeItem('resumeups_extracted_text');
+        localStorage.removeItem('resumeups_file_name');
+      } catch { }
       return;
     }
 
@@ -75,6 +94,11 @@ export class ResumeCheckerPage {
     if (!isSupportedByMime && !isSupportedByExtension) {
       this.selectedFileName.set('');
       this.selectedFile = null;
+      this.cachedExtractedText = '';
+      try {
+        localStorage.removeItem('resumeups_extracted_text');
+        localStorage.removeItem('resumeups_file_name');
+      } catch { }
       this.fileError.set(this.text().form.invalidFileError);
       inputElement.value = '';
       return;
@@ -82,6 +106,10 @@ export class ResumeCheckerPage {
 
     this.selectedFile = file;
     this.selectedFileName.set(file.name);
+    this.cachedExtractedText = '';
+    try {
+      localStorage.removeItem('resumeups_extracted_text');
+    } catch { }
   }
 
   onJdInput(value: string): void {
@@ -105,7 +133,7 @@ export class ResumeCheckerPage {
     const jdValue = this.jdInput().trim();
     let isValid = true;
 
-    if (!this.selectedFile) {
+    if (!this.selectedFile && !this.cachedExtractedText) {
       this.fileError.set(this.text().form.invalidFileError);
       isValid = false;
     }
@@ -132,8 +160,35 @@ export class ResumeCheckerPage {
     this.isLoading.set(true);
     this.showResult.set(false);
 
-    this.resumeCheckerService.analyze(this.selectedFile!, jdValue).subscribe({
+    if (this.selectedFile) {
+      this.resumeCheckerService.extractResume(this.selectedFile).subscribe({
+        next: (extractedText) => {
+          this.cachedExtractedText = extractedText;
+          try {
+            localStorage.setItem('resumeups_extracted_text', extractedText);
+            localStorage.setItem('resumeups_file_name', this.selectedFileName());
+          } catch (e) {
+            console.warn('Failed to save extracted text to localStorage', e);
+          }
+          this.performAnalysis(extractedText, jdValue);
+        },
+        error: () => this.handleError()
+      });
+    } else if (this.cachedExtractedText) {
+      this.performAnalysis(this.cachedExtractedText, jdValue);
+    }
+  }
+
+  private performAnalysis(resumeText: string, jobDescription: string): void {
+    this.resumeCheckerService.requestAnalysis(resumeText, jobDescription).subscribe({
       next: (result) => {
+        try {
+          localStorage.setItem('resumeups_analyze_result', JSON.stringify(result));
+          localStorage.setItem('resumeups_jd_input', jobDescription);
+        } catch (e) {
+          console.warn('Failed to save analysis result to localStorage', e);
+        }
+
         this.analyzeResult.set(result);
         this.isLoading.set(false);
         this.showResult.set(true);
@@ -144,11 +199,13 @@ export class ResumeCheckerPage {
           }
         }, 100);
       },
-      error: () => {
-        this.isLoading.set(false);
-        this.apiError.set(this.text().form.apiError);
-      }
+      error: () => this.handleError()
     });
+  }
+
+  private handleError(): void {
+    this.isLoading.set(false);
+    this.apiError.set(this.text().form.apiError);
   }
 
   toggleFaq(index: number): void {

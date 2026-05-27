@@ -13,14 +13,14 @@ export class ResumeCheckerService {
     );
   }
 
-  private extractResume(file: File): Observable<string> {
+  extractResume(file: File): Observable<string> {
     const formData = new FormData();
     formData.append('file', file);
 
     return this.http.post('/api/resume-extractions/extract', formData, { responseType: 'text' });
   }
 
-  private requestAnalysis(resume: string, jobDescription: string): Observable<AnalyzeResult> {
+  requestAnalysis(resume: string, jobDescription: string): Observable<AnalyzeResult> {
     return this.http.post<AnalyzeResult>('/api/resume-analyses/analyze', { resume, jobDescription });
   }
 }
