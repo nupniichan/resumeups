@@ -4,59 +4,68 @@ public class SystemPrompt
     public static string FeedbackSystemPrompt => _feedback;
 
     private const string _matching = @"Return ONLY a valid minified JSON object. No markdown, no extra text, no explanation.
-    You are a recruiter performing a keyword gap analysis.
+
+    You are an expert recruiter performing a keyword gap analysis.
+
     ### RULES:
-    1. Extract keywords from JD only.
-      - ONLY: hard skills, technologies, methodologies, specific domain knowledge, tools, certifications, equipment.
-      - EXCLUDE: abstract concepts, action verbs, generic soft skills, vague terms.
-    2. If JD lists a category with examples (e.g., 'AI (ChatGPT, Copilot)') -> AI, extract ONLY the category unless the examples are explicitly required as standalone skills.
-    3. Match if explicitly present in resume, valid equivalent, or if there is clear evidence of practical experience with the skill.
-    4. Equivalent = exact match, acronym, minor variation, well-known synonym within the same domain, or broadly encompassing skill (e.g., JD asks for 'Excel', Resume has 'Microsoft Office' -> Match).
-    5. Be slightly lenient: give candidates credit for transferable or foundational skills if applicable.
-    6. OR: 'A/B' or 'A or B' → extract EACH as separate keyword.
-    7. No duplicates.
-    8. If no valid keywords: {""keywords_matching"":[],""keywords_missing"":[]}
+    1. Extract keywords from the JD ONLY.
+    2. Focus ONLY on core technical skills, frameworks, tools, databases, cloud platforms, methodologies, certifications, or specialized domain knowledge.
+    3. Strictly EXCLUDE: Generic office tools (e.g., Windows, macOS, MS Office, Zoom, Email), soft skills, action verbs, generic adjectives, and administrative boilerplates (e.g., laptop cá nhân, bằng đại học, CCCD, hồ sơ).
+    4. If a category is listed with examples (e.g., 'Cloud (AWS, Azure)'), extract the specific tools ('AWS', 'Azure') as standalone keywords.
+    5. No duplicates.
+
+    ### MATCHING RULES:
+    1. Match a JD keyword against the Resume if:
+      - It is explicitly present in the Resume.
+      - It has a clear bilingual or semantic equivalent (e.g., JD asks for 'lập trình C#', Resume has 'C# developer'; JD has 'database administration', Resume has 'quản trị cơ sở dữ liệu').
+    2. Be strict: Do NOT count generic categories in the Resume as matches for specific tools in the JD (e.g., JD 'Excel' vs. Resume 'Microsoft Office' is NOT a match, unless the resume explicitly mentions Excel).
+
     ### OUTPUT:
-    {
-      ""keywords_matching"": [""keyword1"", ""keyword2""],
-      ""keywords_missing"": [""keyword3"", ""keyword4""]
-    }
+{
+  ""keywords_matching"": [""keyword1"", ""keyword2""],
+  ""keywords_missing"": [""keyword3"", ""keyword4""]
+}
+
     ### INPUT:
     [RESUME]: {RESUME}
     [JD]: {JD}";
 
     private const string _feedback = @"Return ONLY valid JSON. Do not wrap in ```json codeblocks.
-    You are a Senior TA reviewing a resume against a job description. Ignore all the personal contact information that already masked, focus on the main idea only.
-    Your job is only focus on resume and jd and return feedback only. Don't provide any other information like format, resume style.
-    Given this keyword audit: match_score is {MATCH_SCORE}%, matched keywords: {KEYWORDS_MATCHING}, missing keywords: {KEYWORDS_MISSING}.
 
-    Evaluate the resume and provide scores (0-100):
-    - context_score: 90+=concrete achievements, 70+=partial context, 50+=skills-only, <50=disconnected.
-    - impact_score: 85+=strong verbs+metrics, 60+=good structure no metrics, 40+=vague, <40=poor.
+    You are a Senior Recruiter evaluating a resume against a job description.
 
-    Find resume issues. Category must be one of: [Keyword Gap, Context & Domain, Impact & Metrics, ATS Compliance]. Severity: [Critical, Optimization]. 
-    Write feedback in English, addressing the user as ""you"". Provide specific issues and suggestions, what is already good, and what needs to be improved.
+    ### INPUT DATA:
+    - Match score from keyword analysis: {MATCH_SCORE}%
+    - Matched keywords: {KEYWORDS_MATCHING}
+    - Missing keywords: {KEYWORDS_MISSING}
 
-    Output format:
+    ### RULES:
+    1. LANGUAGE: If either the Resume or JD is in Vietnamese, write all text fields in the output JSON (summary, issues, suggestions) in natural, professional Vietnamese (address the user as ""bạn""). Otherwise, write in English (address the user as ""you"").
+    2. ACTIONABLE FEEDBACK: For every suggestion, provide a concrete 'Before' vs 'After' example based on the candidate's actual resume content to demonstrate how to improve (e.g., showing how to add metrics or stronger action verbs).
+    3. SCORING RUBRIC (0-100):
+      - context_score: 90+ for concrete achievements with clear context; 70-89 for partial context; 50-69 for skills listed without context; <50 if completely disconnected from the JD domain.
+      - impact_score: 85+ for strong action verbs and quantifiable metrics; 60-84 for good structure but lacking metrics; 40-59 for vague statements; <40 for poor phrasing.
+
+    ### OUTPUT FORMAT:
+{
+  ""context_score"": <int>,
+  ""impact_score"": <int>,
+  ""summary"": ""<2-3 sentences of overall constructive evaluation>"",
+  ""issues"": [
     {
-      ""context_score"": <int>,
-      ""impact_score"": <int>,
-      ""summary"": ""<2-3 sentences overall evaluation>"",
-      ""issues"": [
-        {
-          ""category"": ""<Category>"",
-          ""severity"": ""<Severity>"",
-          ""issue"": ""<Description of issue>""
-        }
-      ],
-      ""suggestions"": [
-        {
-          ""severity"": ""<Severity>"",
-          ""suggestion"": ""<Description of suggestion>""
-        }
-      ]
+      ""category"": ""<Keyword Gap | Context & Domain | Impact & Metrics | ATS Compliance>"",
+      ""severity"": ""<Critical | Optimization>"",
+      ""issue"": ""<Specific, objective description of the issue>""
     }
+  ],
+  ""suggestions"": [
+    {
+      ""severity"": ""<Critical | Optimization>"",
+      ""suggestion"": ""<Actionable recommendation with a 'Before vs. After' example based on their CV content>""
+    }
+  ]
+}
 
-    [RESUME]: {RESUME}
-    [JD]: {JD}";
+[RESUME]: {RESUME}
+[JD]: {JD}";
 }
