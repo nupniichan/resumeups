@@ -4,6 +4,7 @@ interface HeaderTranslation {
   nav: {
     home: string;
     resume: string;
+    companyReviews: string;
     about: string;
   };
   languageSwitcher: {
@@ -17,6 +18,7 @@ export const headerTranslations: LanguageDictionary<HeaderTranslation> = {
     nav: {
       home: 'Home',
       resume: 'Resume',
+      companyReviews: 'Company Reviews',
       about: 'About'
     },
     languageSwitcher: {
@@ -28,6 +30,7 @@ export const headerTranslations: LanguageDictionary<HeaderTranslation> = {
     nav: {
       home: 'Trang chủ',
       resume: 'Kiểm tra',
+      companyReviews: 'Đánh giá',
       about: 'Giới thiệu'
     },
     languageSwitcher: {

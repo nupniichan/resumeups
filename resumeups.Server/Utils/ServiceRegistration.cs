@@ -28,6 +28,10 @@ namespace resumeups.Server.Utils
             services.AddScoped<IMatchingService, MatchingService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IAnalyzeService, AnalyzeService>();
+            services.AddScoped<IReviewSummarizerService, ReviewSummarizerService>();
+            services.AddScoped<INote8ReviewService, Note8ReviewService>();
+            services.AddScoped<IReviewCongTyService, ReviewCongTyService>();
+            services.AddScoped<ICompanyReviewsService, CompanyReviewsService>();
 
             return services;
         }

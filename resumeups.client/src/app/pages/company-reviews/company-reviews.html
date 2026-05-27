@@ -1,0 +1,404 @@
+<div class="min-h-screen bg-gradient-to-b from-[#f7fafd] via-white to-[#f7fafd]">
+  <div class="h-1 bg-gradient-to-r from-[#c6d8ea] via-[#4f8fb8] to-[#c6d8ea]"></div>
+
+  <main class="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 pb-16 pt-12 sm:px-6 lg:px-8 lg:pt-16">
+    <header class="space-y-4">
+      <div class="space-y-2 text-center">
+        <h1 class="text-3xl font-bold tracking-tight text-[#1a3656] sm:text-4xl">
+          {{ text().hero.title }}
+        </h1>
+        <p class="mx-auto max-w-2xl text-sm leading-7 text-[#2d5279]/90 sm:text-base">
+          {{ text().hero.description }}
+        </p>
+      </div>
+    </header>
+
+    <!-- Search Section -->
+    <section
+      scrollReveal="fade-up"
+      [revealDelay]="100"
+      [revealDuration]="650"
+      class="overflow-hidden rounded-2xl border border-[#c6d8ea] bg-white shadow-sm"
+    >
+      <div class="p-5 sm:p-7">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end">
+          <div class="flex-1">
+            <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-[#4f8fb8]">
+              {{ text().form.label }}
+            </label>
+            <div class="relative">
+              <input
+                type="text"
+                [value]="searchQuery()"
+                (input)="onSearchQueryInput(searchQueryField.value)"
+                #searchQueryField
+                (keyup.enter)="onSubmit()"
+                class="w-full rounded-xl border border-[#c6d8ea] bg-white py-3 pl-4 pr-10 text-sm leading-relaxed text-[#1a3656] outline-none transition duration-200 focus:border-[#4f8fb8] focus:ring-2 focus:ring-[#4f8fb8]/20"
+                [placeholder]="text().form.placeholder"
+              />
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 text-[#2d5279]/60 pointer-events-none">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            (click)="onSubmit()"
+            [disabled]="isLoading()"
+            class="inline-flex h-[46px] items-center justify-center gap-2 rounded-md bg-[#1a3656] px-6 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#16304c] hover:shadow-lg hover:shadow-[#1a3656]/20 disabled:pointer-events-none disabled:opacity-60"
+          >
+            @if (isLoading()) {
+              <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" class="opacity-25" />
+                <path fill="currentColor" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z" class="opacity-75" />
+              </svg>
+              <span>{{ text().form.loadingButton }}</span>
+            } @else {
+              <span>{{ text().form.submitButton }}</span>
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+              </svg>
+            }
+          </button>
+        </div>
+
+        @if (apiError()) {
+          <div class="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+            <p class="text-sm font-medium text-red-700">{{ apiError() }}</p>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Skeleton Loading Section -->
+    @if (isLoading()) {
+      <div class="space-y-6 animate-pulse">
+        <!-- Platform Navigation Tabs Skeleton -->
+        <div class="flex flex-wrap gap-2 border-b border-[#c6d8ea] pb-px">
+          <div class="h-9 w-32 rounded bg-slate-200"></div>
+          <div class="h-9 w-32 rounded bg-slate-200"></div>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Platform Header / Quick Stats Card Skeleton -->
+          <section class="overflow-hidden rounded-2xl border border-[#c6d8ea] bg-white p-6 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-4 w-full md:w-auto">
+              <div class="h-16 w-16 shrink-0 rounded-xl bg-slate-200"></div>
+              <div class="space-y-2 flex-1 md:w-48">
+                <div class="h-5 w-40 rounded bg-slate-200"></div>
+                <div class="h-3.5 w-24 rounded bg-slate-200"></div>
+              </div>
+            </div>
+
+            <!-- Rating Score Block Skeleton -->
+            <div class="flex items-center gap-5 w-full md:w-auto">
+              <div class="relative h-24 w-24 shrink-0 rounded-full bg-slate-100 flex items-center justify-center border-4 border-slate-200">
+                <div class="h-8 w-8 rounded bg-slate-200"></div>
+              </div>
+              <div class="space-y-2">
+                <div class="h-4 w-32 rounded bg-slate-200"></div>
+                <div class="h-3.5 w-20 rounded bg-slate-200"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- AI Summary Column Skeleton -->
+          <section class="overflow-hidden rounded-2xl border border-[#c6d8ea] bg-white p-6 sm:p-7 space-y-4">
+            <div class="h-5 w-44 rounded bg-slate-200"></div>
+            <div class="space-y-3">
+              <div class="h-3.5 w-full rounded bg-slate-200"></div>
+              <div class="h-3.5 w-11/12 rounded bg-slate-200"></div>
+              <div class="h-3.5 w-4/5 rounded bg-slate-200"></div>
+              <div class="h-3.5 w-5/6 rounded bg-slate-200"></div>
+            </div>
+          </section>
+
+          <!-- Split Pros and Cons Card Grid Skeleton -->
+          <div class="grid gap-6 md:grid-cols-2">
+            <!-- Pros Card Skeleton -->
+            <section class="rounded-2xl border border-emerald-100 bg-emerald-50/10 p-5 sm:p-6 space-y-4">
+              <div class="h-4.5 w-28 rounded bg-slate-200"></div>
+              <div class="space-y-3">
+                <div class="flex items-center gap-2">
+                  <div class="h-4 w-4 rounded-full bg-emerald-200/50 shrink-0 animate-pulse"></div>
+                  <div class="h-3 w-5/6 rounded bg-slate-200"></div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="h-4 w-4 rounded-full bg-emerald-200/50 shrink-0 animate-pulse"></div>
+                  <div class="h-3 w-11/12 rounded bg-slate-200"></div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="h-4 w-4 rounded-full bg-emerald-200/50 shrink-0 animate-pulse"></div>
+                  <div class="h-3 w-3/4 rounded bg-slate-200"></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Cons Card Skeleton -->
+            <section class="rounded-2xl border border-rose-100 bg-rose-50/5 p-5 sm:p-6 space-y-4">
+              <div class="h-4.5 w-28 rounded bg-slate-200"></div>
+              <div class="space-y-3">
+                <div class="flex items-center gap-2">
+                  <div class="h-4 w-4 rounded-full bg-rose-200/40 shrink-0 animate-pulse"></div>
+                  <div class="h-3 w-11/12 rounded bg-slate-200"></div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="h-4 w-4 rounded-full bg-rose-200/40 shrink-0 animate-pulse"></div>
+                  <div class="h-3 w-5/6 rounded bg-slate-200"></div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="h-4 w-4 rounded-full bg-rose-200/40 shrink-0 animate-pulse"></div>
+                  <div class="h-3 w-4/5 rounded bg-slate-200"></div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Management Recommendations Skeleton -->
+          <section class="overflow-hidden rounded-2xl border border-[#c6d8ea] bg-white p-6 sm:p-7 space-y-4">
+            <div class="h-4.5 w-52 rounded bg-slate-200"></div>
+            <div class="space-y-3">
+              <div class="flex items-center gap-2.5">
+                <div class="h-2 w-2 rounded-full bg-slate-300 shrink-0 animate-pulse"></div>
+                <div class="h-3 w-11/12 rounded bg-slate-200"></div>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <div class="h-2 w-2 rounded-full bg-slate-300 shrink-0 animate-pulse"></div>
+                <div class="h-3 w-4/5 rounded bg-slate-200"></div>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <div class="h-2 w-2 rounded-full bg-slate-300 shrink-0 animate-pulse"></div>
+                <div class="h-3 w-5/6 rounded bg-slate-200"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    }
+
+    <!-- Results Section -->
+    @if (showResult()) {
+      <div id="reviews-result-section" class="space-y-6">
+        <!-- Platform Navigation Tabs -->
+        <div class="flex flex-wrap gap-2 border-b border-[#c6d8ea] pb-px">
+          <button
+            type="button"
+            (click)="setActiveTab('note8')"
+            [class.border-[#4f8fb8]]="activeTab() === 'note8'"
+            [class.text-[#1a3656]]="activeTab() === 'note8'"
+            [class.font-bold]="activeTab() === 'note8'"
+            [class.text-[#2d5279]/70]="activeTab() !== 'note8'"
+            [class.border-transparent]="activeTab() !== 'note8'"
+            class="border-b-2 px-4 py-2 text-sm font-semibold transition-all duration-200 outline-none"
+          >
+            {{ text().tabs.note8 }}
+            @if (reviewResult()?.note8?.found) {
+              <span class="ml-1.5 inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-2xs font-bold text-emerald-700">★ {{ reviewResult()?.note8?.rating || 'N/A' }}</span>
+            } @else {
+              <span class="ml-1.5 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-2xs font-semibold text-slate-500">∅</span>
+            }
+          </button>
+
+          <button
+            type="button"
+            (click)="setActiveTab('reviewcongty')"
+            [class.border-[#4f8fb8]]="activeTab() === 'reviewcongty'"
+            [class.text-[#1a3656]]="activeTab() === 'reviewcongty'"
+            [class.font-bold]="activeTab() === 'reviewcongty'"
+            [class.text-[#2d5279]/70]="activeTab() !== 'reviewcongty'"
+            [class.border-transparent]="activeTab() !== 'reviewcongty'"
+            class="border-b-2 px-4 py-2 text-sm font-semibold transition-all duration-200 outline-none"
+          >
+            {{ text().tabs.reviewcongty }}
+            @if (reviewResult()?.reviewCongTy?.found) {
+              <span class="ml-1.5 inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-2xs font-bold text-emerald-700">★ {{ reviewResult()?.reviewCongTy?.rating || 'N/A' }}</span>
+            } @else {
+              <span class="ml-1.5 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-2xs font-semibold text-slate-500">∅</span>
+            }
+          </button>
+
+
+        </div>
+
+        <!-- Render Current Platform Reviews -->
+        @if (activePlatform()?.found) {
+          <div class="space-y-6">
+            <!-- Platform Header / Quick Stats Card -->
+            <section
+              scrollReveal="fade-up"
+              class="overflow-hidden rounded-2xl border border-[#c6d8ea] bg-white shadow-sm"
+            >
+              <div class="p-6 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                  @if (resolvedLogoUrl()) {
+                    <div class="h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-[#c6d8ea] p-1 bg-[#f7fafd] flex items-center justify-center">
+                      <img [src]="resolvedLogoUrl()" class="max-h-full max-w-full object-contain" alt="Company Logo" />
+                    </div>
+                  }
+                  <div>
+                    <h2 class="text-xl font-bold text-[#1a3656]">{{ reviewResult()?.companyName }}</h2>
+                    <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[#2d5279]/70 font-semibold">
+                      @if (activePlatform()?.website) {
+                        <a [href]="activePlatform()?.website" target="_blank" rel="noopener" class="text-[#4f8fb8] hover:underline flex items-center gap-0.5">
+                          {{ text().result.visitWebsite }}
+                          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+                          </svg>
+                        </a>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Rating Score Block -->
+                <div class="flex items-center gap-5">
+                  <div class="relative h-24 w-24 shrink-0">
+                    <svg class="h-24 w-24 -rotate-90" viewBox="0 0 120 120" aria-hidden="true">
+                      <circle cx="60" cy="60" r="52" fill="none" stroke="#c6d8ea" stroke-width="9" />
+                      <circle
+                        cx="60"
+                        cy="60"
+                        r="52"
+                        fill="none"
+                        stroke="yellowgreen"
+                        stroke-width="9"
+                        stroke-linecap="round"
+                        [attr.stroke-dasharray]="scoreCircumference()"
+                        [attr.stroke-dashoffset]="scoreStrokeDashoffset()"
+                      />
+                    </svg>
+                    <div class="pointer-events-none absolute inset-0 flex items-center justify-center flex-col leading-none">
+                      <span class="text-2xl font-extrabold tabular-nums text-[#1a3656]">{{ ratingScore() | number:'1.1-1' }}</span>
+                      <span class="text-3xs uppercase font-bold tracking-wider text-[#2d5279]/60 mt-0.5">★ / 5</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-[#1a3656]">{{ text().result.ratingCircleLabel }}</p>
+                    <div class="mt-1 flex items-center text-amber-400 gap-0.5 text-sm">
+                      @for (star of [1,2,3,4,5]; track star) {
+                        <svg class="h-4 w-4" [class.fill-current]="ratingScore() >= star" [class.opacity-30]="ratingScore() < star" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- AI Summary Column -->
+            <section
+              scrollReveal="fade-up"
+              class="overflow-hidden rounded-2xl border border-[#c6d8ea] bg-white shadow-sm p-6 sm:p-7"
+            >
+              <h3 class="text-lg font-bold text-[#1a3656] border-b border-[#c6d8ea]/60 pb-3 mb-4 flex items-center gap-2">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="text-[#4f8fb8]">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21m0 0l-.813-5.096L3 15.09M9 21l8.156-8.156m-8.156 8.156l-3.242-3.242m3.242 3.242m3.242-3.242m0 0L21 3m0 0l-8.156 8.156m8.156-8.156l-3.242-3.242M21 3L17.758 6.242M13.5 13.5L21 3"/>
+                </svg>
+                {{ text().result.summaryLabel }}
+              </h3>
+              <p class="text-sm leading-relaxed text-[#2d5279]/90">{{ activePlatform()?.summary }}</p>
+            </section>
+
+            <!-- Split Pros and Cons Card Grid -->
+            <div class="grid gap-6 md:grid-cols-2">
+              <!-- Pros Card -->
+              <section
+                scrollReveal="fade-up"
+                class="rounded-2xl border border-emerald-100 bg-emerald-50/20 p-5 sm:p-6"
+              >
+                <h3 class="text-base font-bold text-emerald-800 flex items-center gap-2 border-b border-emerald-100 pb-3 mb-4">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  {{ text().result.prosLabel }}
+                </h3>
+                <ul class="space-y-3">
+                  @for (pro of activePlatform()?.pros || []; track pro) {
+                    <li class="flex items-start gap-2.5 text-sm leading-relaxed text-slate-700">
+                      <span class="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+                        <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+                        </svg>
+                      </span>
+                      {{ pro }}
+                    </li>
+                  }
+                </ul>
+              </section>
+
+              <!-- Cons Card -->
+              <section
+                scrollReveal="fade-up"
+                class="rounded-2xl border border-rose-100 bg-rose-50/10 p-5 sm:p-6"
+              >
+                <h3 class="text-base font-bold text-rose-800 flex items-center gap-2 border-b border-rose-100 pb-3 mb-4">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+                  </svg>
+                  {{ text().result.consLabel }}
+                </h3>
+                <ul class="space-y-3">
+                  @for (con of activePlatform()?.cons || []; track con) {
+                    <li class="flex items-start gap-2.5 text-sm leading-relaxed text-slate-700">
+                      <span class="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-700">
+                        <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
+                        </svg>
+                      </span>
+                      {{ con }}
+                    </li>
+                  }
+                </ul>
+              </section>
+            </div>
+
+            <!-- Management Recommendations -->
+            @if (activePlatform()?.recommendations?.length) {
+              <section
+                scrollReveal="fade-up"
+                class="overflow-hidden rounded-2xl border border-[#c6d8ea] bg-white shadow-sm p-6 sm:p-7"
+              >
+                <h3 class="text-base font-bold text-[#1a3656] border-b border-[#c6d8ea]/60 pb-3 mb-4 flex items-center gap-2">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" class="text-[#4f8fb8]">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 111.063.852l-.708 2.836a.75.75 0 001.063.852l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/>
+                  </svg>
+                  {{ text().result.recommendationsLabel }}
+                </h3>
+                <ul class="space-y-3">
+                  @for (rec of activePlatform()?.recommendations || []; track rec) {
+                    <li class="flex items-start gap-2 text-sm leading-relaxed text-[#2d5279]/90">
+                      <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#4f8fb8]"></span>
+                      {{ rec }}
+                    </li>
+                  }
+                </ul>
+              </section>
+            }
+          </div>
+        } @else {
+          <!-- Empty State Container when Found is False -->
+          <section
+            scrollReveal="fade-up"
+            class="rounded-2xl border border-[#c6d8ea] bg-white shadow-2xs py-16 px-4 text-center space-y-5"
+          >
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-50 text-slate-400 border border-slate-200">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+              </svg>
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-[#1a3656]">{{ text().result.emptyStateTitle }}</h3>
+              <p class="mx-auto max-w-md text-xs leading-relaxed text-[#2d5279]/80">
+                {{ text().result.emptyStateDesc }}
+              </p>
+            </div>
+          </section>
+        }
+      </div>
+    }
+  </main>
+</div>

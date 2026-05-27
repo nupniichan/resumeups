@@ -30,6 +30,17 @@
         {{ text().nav.resume }}
       </a>
       <a
+        routerLink="/company-reviews"
+        routerLinkActive="!text-[#1a3656] bg-[#c6d8ea]/30"
+        class="relative rounded-md px-3.5 py-2 text-sm font-medium tracking-wide text-[#2d5279] transition-colors
+               hover:text-[#1a3656]
+               after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-[1.5px]
+               after:rounded-full after:bg-[#4f8fb8]
+               after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-200"
+      >
+        {{ text().nav.companyReviews }}
+      </a>
+      <a
         routerLink="/about"
         routerLinkActive="!text-[#1a3656] bg-[#c6d8ea]/30"
         class="relative rounded-md px-3.5 py-2 text-sm font-medium tracking-wide text-[#2d5279] transition-colors
