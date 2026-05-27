@@ -30,7 +30,7 @@ export const headerTranslations: LanguageDictionary<HeaderTranslation> = {
     nav: {
       home: 'Trang chủ',
       resume: 'Kiểm tra',
-      companyReviews: 'Đánh giá',
+      companyReviews: 'Đánh giá công ty',
       about: 'Giới thiệu'
     },
     languageSwitcher: {
