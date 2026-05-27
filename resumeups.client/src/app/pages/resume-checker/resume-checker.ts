@@ -137,6 +137,12 @@ export class ResumeCheckerPage {
         this.analyzeResult.set(result);
         this.isLoading.set(false);
         this.showResult.set(true);
+        setTimeout(() => {
+          const element = document.getElementById('result-section');
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
       },
       error: () => {
         this.isLoading.set(false);
