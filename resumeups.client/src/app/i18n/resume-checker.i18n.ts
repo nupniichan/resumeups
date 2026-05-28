@@ -33,6 +33,10 @@ interface ResumeCheckerTranslation {
     consentLabelPrefix: string;
     consentLabelLink: string;
     consentRequiredError: string;
+    feedbackLanguageLabel: string;
+    feedbackLanguageAuto: string;
+    feedbackLanguageVi: string;
+    feedbackLanguageEn: string;
   };
   result: {
     title: string;
@@ -77,7 +81,11 @@ export const resumeCheckerTranslations: LanguageDictionary<ResumeCheckerTranslat
       apiError: 'Something went wrong while analyzing your resume. Please try again.',
       consentLabelPrefix: 'I have read and agree to the',
       consentLabelLink: 'Terms of Service',
-      consentRequiredError: 'Please read and agree to the Terms of Service before continuing.'
+      consentRequiredError: 'Please read and agree to the Terms of Service before continuing.',
+      feedbackLanguageLabel: 'Feedback Language',
+      feedbackLanguageAuto: 'Auto (Match JD)',
+      feedbackLanguageVi: 'Vietnamese',
+      feedbackLanguageEn: 'English'
     },
     result: {
       title: 'Result',
@@ -125,7 +133,11 @@ export const resumeCheckerTranslations: LanguageDictionary<ResumeCheckerTranslat
       apiError: 'Đã xảy ra lỗi khi phân tích CV của bạn. Vui lòng thử lại.',
       consentLabelPrefix: 'Tôi đã đọc và đồng ý với',
       consentLabelLink: 'Điều khoản dịch vụ',
-      consentRequiredError: 'Vui lòng đọc và đồng ý với Điều khoản dịch vụ trước khi tiếp tục.'
+      consentRequiredError: 'Vui lòng đọc và đồng ý với Điều khoản dịch vụ trước khi tiếp tục.',
+      feedbackLanguageLabel: 'Ngôn ngữ nhận xét',
+      feedbackLanguageAuto: 'Tự động (Theo JD)',
+      feedbackLanguageVi: 'Tiếng Việt',
+      feedbackLanguageEn: 'Tiếng Anh'
     },
     result: {
       title: 'Kết quả',

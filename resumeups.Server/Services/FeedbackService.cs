@@ -14,14 +14,17 @@ namespace resumeups.Server.Services
             _llmClient = llmClient;
         }
 
-        public async Task<FeedbackResult> AnalyzeFeedback(string resume, string jobDescription, MatchingResult matching)
+        public async Task<FeedbackResult> AnalyzeFeedback(string resume, string jobDescription, MatchingResult matching, string language = "auto")
         {
+            var languageRule = GetLanguageRule(language);
+
             var prompt = SystemPrompt.FeedbackSystemPrompt
                 .Replace("{RESUME}", resume)
                 .Replace("{JD}", jobDescription)
                 .Replace("{MATCH_SCORE}", matching.MatchScore.ToString())
                 .Replace("{KEYWORDS_MATCHING}", string.Join(", ", matching.KeywordsMatching))
-                .Replace("{KEYWORDS_MISSING}", string.Join(", ", matching.KeywordsMissing));
+                .Replace("{KEYWORDS_MISSING}", string.Join(", ", matching.KeywordsMissing))
+                .Replace("{LANGUAGE_RULE}", languageRule);
 
             var messages = new List<LlmChatMessage>
             {
@@ -88,6 +91,24 @@ namespace resumeups.Server.Services
         {
             var weightedScore = matchScore * 0.5 + contextScore * 0.25 + impactScore * 0.25;
             return (int)Math.Round(weightedScore, MidpointRounding.AwayFromZero);
+        }
+
+        private static string GetLanguageRule(string language)
+        {
+            if (language?.ToLower() == "vi")
+            {
+                return "Write all text fields in the output JSON (summary, issues, suggestions) in natural, professional Vietnamese (address the user as \"bạn\").";
+            }
+            if (language?.ToLower() == "en")
+            {
+                return "Write all text fields in the output JSON (summary, issues, suggestions) in natural, professional English (address the user as \"you\").";
+            }
+
+            return "Detect the language of the Job Description (JD). " +
+                   "If the JD is in Vietnamese, write all text fields in the output JSON (summary, issues, suggestions) in natural, professional Vietnamese (address the user as \"bạn\"). " +
+                   "If the JD is in English, write in natural, professional English (address the user as \"you\"). " +
+                   "If the JD is in another language (e.g. Japanese, French, German, Chinese, etc.), write all text fields in that same language. " +
+                   "Be natural and professional, addressing the candidate using professional pronouns in that language.";
         }
     }
 }

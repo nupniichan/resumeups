@@ -19,6 +19,7 @@ export class ResumeCheckerPage {
   readonly text = computed(() => resumeCheckerTranslations[this.languageService.currentLanguage()]);
   readonly selectedFileName = signal(localStorage.getItem('resumeups_file_name') || '');
   readonly jdInput = signal(localStorage.getItem('resumeups_jd_input') || '');
+  readonly selectedLanguage = signal(localStorage.getItem('resumeups_selected_language') || 'auto');
   readonly fileError = signal('');
   readonly jdError = signal('');
   readonly consentError = signal('');
@@ -129,6 +130,14 @@ export class ResumeCheckerPage {
     }
   }
 
+  onLanguageChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.selectedLanguage.set(select.value);
+    try {
+      localStorage.setItem('resumeups_selected_language', select.value);
+    } catch { }
+  }
+
   onSubmit(): void {
     const jdValue = this.jdInput().trim();
     let isValid = true;
@@ -180,7 +189,7 @@ export class ResumeCheckerPage {
   }
 
   private performAnalysis(resumeText: string, jobDescription: string): void {
-    this.resumeCheckerService.requestAnalysis(resumeText, jobDescription).subscribe({
+    this.resumeCheckerService.requestAnalysis(resumeText, jobDescription, this.selectedLanguage()).subscribe({
       next: (result) => {
         try {
           localStorage.setItem('resumeups_analyze_result', JSON.stringify(result));

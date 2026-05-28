@@ -20,7 +20,7 @@ export class ResumeCheckerService {
     return this.http.post('/api/resume-extractions/extract', formData, { responseType: 'text' });
   }
 
-  requestAnalysis(resume: string, jobDescription: string): Observable<AnalyzeResult> {
-    return this.http.post<AnalyzeResult>('/api/resume-analyses/analyze', { resume, jobDescription });
+  requestAnalysis(resume: string, jobDescription: string, language: string = 'vi'): Observable<AnalyzeResult> {
+    return this.http.post<AnalyzeResult>('/api/resume-analyses/analyze', { resume, jobDescription, language });
   }
 }

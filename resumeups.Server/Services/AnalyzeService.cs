@@ -16,7 +16,7 @@ namespace resumeups.Server.Services
         public async Task<AnalyzeResult> Analyze(AnalyzeRequest request)
         {
             var matching = await _matchingService.AnalyzeMatching(request.Resume, request.JobDescription);
-            var feedback = await _feedbackService.AnalyzeFeedback(request.Resume, request.JobDescription, matching);
+            var feedback = await _feedbackService.AnalyzeFeedback(request.Resume, request.JobDescription, matching, request.Language);
 
             return new AnalyzeResult
             {

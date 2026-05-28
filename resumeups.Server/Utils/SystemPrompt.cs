@@ -40,7 +40,7 @@ public class SystemPrompt
     - Missing keywords: {KEYWORDS_MISSING}
 
     ### RULES:
-    1. LANGUAGE: If either the Resume or JD is in Vietnamese, write all text fields in the output JSON (summary, issues, suggestions) in natural, professional Vietnamese (address the user as ""bạn""). Otherwise, write in English (address the user as ""you"").
+    1. LANGUAGE: {LANGUAGE_RULE}
     2. ACTIONABLE FEEDBACK: For every suggestion, provide a concrete 'Before' vs 'After' example based on the candidate's actual resume content to demonstrate how to improve (e.g., showing how to add metrics or stronger action verbs).
     3. SCORING RUBRIC (0-100):
       - context_score: 90+ for concrete achievements with clear context; 70-89 for partial context; 50-69 for skills listed without context; <50 if completely disconnected from the JD domain.
