@@ -97,6 +97,28 @@ namespace resumeups.Server.Services
                 }
             }
 
+            var reviewsCount = "";
+            var countNode = detailsDoc.DocumentNode.SelectSingleNode("//span[contains(@class, 'crp-rating-count')]") ??
+                            detailsDoc.DocumentNode.SelectSingleNode("//span[contains(@class, 'crp-review-count')]") ??
+                            detailsDoc.DocumentNode.SelectSingleNode("//div[contains(@class, 'crp-company-reviews-count')]") ??
+                            detailsDoc.DocumentNode.SelectSingleNode("//span[contains(text(), 'đánh giá')]");
+            if (countNode != null)
+            {
+                var match = Regex.Match(countNode.InnerText, @"\d+");
+                if (match.Success) reviewsCount = match.Value;
+            }
+
+            if (string.IsNullOrEmpty(reviewsCount))
+            {
+                var match = Regex.Match(detailsHtml, @"\b(\d+)\s*(?:đánh giá|nhận xét|reviews)\b", RegexOptions.IgnoreCase);
+                if (match.Success) reviewsCount = match.Groups[1].Value;
+            }
+
+            if (string.IsNullOrEmpty(reviewsCount) && reviewNodes != null)
+            {
+                reviewsCount = reviewNodes.Count.ToString();
+            }
+
             return new ReviewFetchResult
             {
                 PartialStats = new ReviewStats
@@ -104,7 +126,8 @@ namespace resumeups.Server.Services
                     Found = true,
                     Rating = ratingScore,
                     LogoUrl = logoUrl,
-                    Website = websiteUrl
+                    Website = websiteUrl,
+                    ReviewsCount = reviewsCount
                 },
                 RawReviews = rawReviewsText
             };

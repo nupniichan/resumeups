@@ -29,28 +29,28 @@ namespace resumeups.Server.Utils
         You are a senior HR consultant analyzing employee reviews from TWO different job review platforms. Synthesize the reviews from each platform separately into professional summaries.
 
         ### RULES:
-        1. Write everything in natural, professional Vietnamese (addressing the candidate as 'bạn').
+        1. Write everything in natural, professional {LANGUAGE} (addressing the candidate as '{PRONOUN}').
         2. Keep each summary concise (2-3 sentences).
-        3. Extract up to 4-5 key Pros (ưu điểm) and Cons (nhược điểm) per platform based on common themes.
-        4. Provide 3-4 actionable Recommendations/Advice (lời khuyên) per platform for job seekers.
+        3. Extract up to 4-5 key Pros and Cons per platform based on common themes.
+        4. Provide 3-4 actionable Recommendations/Advice per platform for job seekers.
         5. DO NOT invent ratings, numbers, or details not in the raw review text.
         6. If reviews for a platform are marked ""NO_REVIEWS"", return these defaults for that platform:
-           - summary: ""Chưa có đánh giá cụ thể nào được ghi nhận cho công ty này.""
-           - pros/cons/recommendations: [""Chưa có ghi nhận""]
+           - summary: ""{NO_REVIEWS_SUMMARY}""
+           - pros/cons/recommendations: [""{NO_REVIEWS_DEFAULT}""]
 
         ### OUTPUT FORMAT:
         {
           ""note8"": {
             ""summary"": ""..."",
-            ""pros"": [""ưu điểm 1"", ""ưu điểm 2""],
-            ""cons"": [""nhược điểm 1"", ""nhược điểm 2""],
-            ""recommendations"": [""lời khuyên 1"", ""lời khuyên 2""]
+            ""pros"": [""Advantage 1"", ""Advantage 2""],
+            ""cons"": [""Disadvantage 1"", ""Disadvantage 2""],
+            ""recommendations"": [""Recommend 1"", ""Recommend 2""]
           },
           ""reviewCongTy"": {
             ""summary"": ""..."",
-            ""pros"": [""ưu điểm 1""],
-            ""cons"": [""nhược điểm 1""],
-            ""recommendations"": [""lời khuyên 1""]
+            ""pros"": [""Advantage 1""],
+            ""cons"": [""Disadvantage 1""],
+            ""recommendations"": [""Recommend 1""]
           }
         }
 
@@ -59,5 +59,30 @@ namespace resumeups.Server.Utils
 
         ### REVIEWCONGTY REVIEWS:
         {REVIEWCONGTY_REVIEWS}";
+
+        public const string IndeedSummarizationPrompt = @"Return ONLY valid JSON. Do not wrap in ```json codeblocks. No markdown, no extra text, no explanation.
+
+        You are a senior HR consultant analyzing employee reviews from Indeed. Synthesize the provided overall rating and review titles into a professional summary, key pros/cons, and recommendations.
+
+        ### RULES:
+        1. Write everything in natural, professional {LANGUAGE} (addressing the candidate as '{PRONOUN}').
+        2. Keep the summary highly professional, objective, and concise (2-3 sentences).
+        3. Extract up to 4-5 key Pros and Cons of working at this company.
+        4. Provide 3-4 actionable Recommendations/Advice for job seekers.
+        5. DO NOT invent or include any numerical ratings in the JSON response.
+
+        ### INPUT DATA:
+        - Company: {COMPANY_NAME}
+        - Overall Rating: {OVERALL_RATING} / 5 ({REVIEWS_COUNT})
+        - Sample Review Titles:
+        {REVIEW_TITLES}
+
+        ### OUTPUT FORMAT:
+        {
+          ""summary"": ""Summary of the company's quality, culture, and employee experience."",
+          ""pros"": [""Advantage 1"", ""Advantage 2""],
+          ""cons"": [""Disadvantage 1"", ""Disadvantage 2""],
+          ""recommendations"": [""Recommendation 1"", ""Recommendation 2""]
+        }";
     }
 }

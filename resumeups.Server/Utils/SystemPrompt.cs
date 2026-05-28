@@ -21,10 +21,10 @@ public class SystemPrompt
     2. Be strict: Do NOT count generic categories in the Resume as matches for specific tools in the JD (e.g., JD 'Excel' vs. Resume 'Microsoft Office' is NOT a match, unless the resume explicitly mentions Excel).
 
     ### OUTPUT:
-{
-  ""keywords_matching"": [""keyword1"", ""keyword2""],
-  ""keywords_missing"": [""keyword3"", ""keyword4""]
-}
+    {
+      ""keywords_matching"": [""keyword1"", ""keyword2""],
+      ""keywords_missing"": [""keyword3"", ""keyword4""]
+    }
 
     ### INPUT:
     [RESUME]: {RESUME}
@@ -47,25 +47,25 @@ public class SystemPrompt
       - impact_score: 85+ for strong action verbs and quantifiable metrics; 60-84 for good structure but lacking metrics; 40-59 for vague statements; <40 for poor phrasing.
 
     ### OUTPUT FORMAT:
-{
-  ""context_score"": <int>,
-  ""impact_score"": <int>,
-  ""summary"": ""<2-3 sentences of overall constructive evaluation>"",
-  ""issues"": [
     {
-      ""category"": ""<Keyword Gap | Context & Domain | Impact & Metrics | ATS Compliance>"",
-      ""severity"": ""<Critical | Optimization>"",
-      ""issue"": ""<Specific, objective description of the issue>""
+      ""context_score"": <int>,
+      ""impact_score"": <int>,
+      ""summary"": ""<2-3 sentences of overall constructive evaluation>"",
+      ""issues"": [
+        {
+          ""category"": ""<Keyword Gap | Context & Domain | Impact & Metrics | ATS Compliance>"",
+          ""severity"": ""<Critical | Optimization>"",
+          ""issue"": ""<Specific, objective description of the issue>""
+        }
+      ],
+      ""suggestions"": [
+        {
+          ""severity"": ""<Critical | Optimization>"",
+          ""suggestion"": ""<Actionable recommendation with a 'Before vs. After' example based on their CV content>""
+        }
+      ]
     }
-  ],
-  ""suggestions"": [
-    {
-      ""severity"": ""<Critical | Optimization>"",
-      ""suggestion"": ""<Actionable recommendation with a 'Before vs. After' example based on their CV content>""
-    }
-  ]
-}
 
-[RESUME]: {RESUME}
-[JD]: {JD}";
+    [RESUME]: {RESUME}
+    [JD]: {JD}";
 }

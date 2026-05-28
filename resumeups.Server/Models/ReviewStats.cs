@@ -12,5 +12,14 @@ namespace resumeups.Server.Models
         public List<string> Pros { get; set; } = new();
         public List<string> Cons { get; set; } = new();
         public List<string> Recommendations { get; set; } = new();
+
+        // Indeed is kinda different
+        public string ReviewsCount { get; set; } = string.Empty;
+        public double? WorkLifeBalance { get; set; }
+        public double? PayAndBenefits { get; set; }
+        public double? JobSecurityAndAdvancement { get; set; }
+        public double? Management { get; set; }
+        public double? Culture { get; set; }
+        public List<string> ReviewTitles { get; set; } = new();
     }
 }

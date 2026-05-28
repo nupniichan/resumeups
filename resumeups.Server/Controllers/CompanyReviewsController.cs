@@ -25,7 +25,7 @@ namespace resumeups.Server.Controllers
                 return BadRequest("Company name is required.");
             }
 
-            var result = await _reviewsService.GetCompanyReviewsAsync(request.CompanyName);
+            var result = await _reviewsService.GetCompanyReviewsAsync(request.CompanyName, request.Language);
             return Ok(result);
         }
     }

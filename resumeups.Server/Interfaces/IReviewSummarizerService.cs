@@ -13,6 +13,20 @@ namespace resumeups.Server.Interfaces
 
         Task<(ReviewStats note8, ReviewStats reviewCongTy)> SummarizeBothAsync(
             List<string> note8Reviews,
-            List<string> rctReviews);
+            List<string> rctReviews,
+            string language = "vi");
+
+        Task<ReviewStats> SummarizeIndeedAsync(
+            string companyName,
+            string indeedUrl,
+            double? overallRating,
+            string reviewsCount,
+            double? workLife,
+            double? payBenefits,
+            double? jobSecurity,
+            double? management,
+            double? culture,
+            List<string> reviewTitles,
+            string language = "vi");
     }
 }

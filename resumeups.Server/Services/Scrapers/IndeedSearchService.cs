@@ -1,0 +1,70 @@
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using resumeups.Server.Interfaces;
+
+namespace resumeups.Server.Services.Scrapers
+{
+    public sealed class IndeedSearchService : IIndeedSearchService
+    {
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public IndeedSearchService(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+
+        public async Task<(string? slug, string? host, string? html)> SearchIndeedSlugHostAndHtmlAsync(string companyName)
+        {
+            var query = $"{companyName} indeed company reviews";
+            var client = CreateHttpClient();
+            var searchUrl = $"https://www.google.com/search?q={Uri.EscapeDataString(query)}";
+
+            string? searchHtml = null;
+            try
+            {
+                var response = await client.GetAsync(searchUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    searchHtml = await response.Content.ReadAsStringAsync();
+                    var (slug, host) = IndeedReviewParser.ExtractIndeedSlugAndHost(searchHtml);
+                    if (!string.IsNullOrEmpty(slug))
+                    {
+                        return (slug, host, searchHtml);
+                    }
+                }
+                Console.WriteLine($"Indeed Search: Google Search failed or was blocked. Falling back to DuckDuckGo...");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Indeed Search: Google Search exception: {ex.Message}. Trying DuckDuckGo fallback...");
+            }
+
+            try
+            {
+                var ddgUrl = $"https://html.duckduckgo.com/html/?q={Uri.EscapeDataString(query)}";
+                var response = await client.GetAsync(ddgUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    searchHtml = await response.Content.ReadAsStringAsync();
+                    var (slug, host) = IndeedReviewParser.ExtractIndeedSlugAndHost(searchHtml);
+                    return (slug, host, searchHtml);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Indeed Search: DuckDuckGo search fallback failed: {ex.Message}");
+            }
+            return (null, null, searchHtml);
+        }
+
+        private HttpClient CreateHttpClient()
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+            client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+            client.DefaultRequestHeaders.Add("Accept-Language", "vi,en-US;q=0.9,en;q=0.8");
+            return client;
+        }
+    }
+}

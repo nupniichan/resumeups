@@ -116,6 +116,27 @@ namespace resumeups.Server.Services
                 }
             }
 
+            var reviewsCount = "";
+            var countNode = htmlDoc.DocumentNode.SelectSingleNode("//span[contains(@class, 'ReviewCount')]") ??
+                            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@class, 'ReviewCount')]") ??
+                            htmlDoc.DocumentNode.SelectSingleNode("//a[contains(@href, '#reviews')]");
+            if (countNode != null)
+            {
+                var match = Regex.Match(countNode.InnerText, @"\d+");
+                if (match.Success) reviewsCount = match.Value;
+            }
+
+            if (string.IsNullOrEmpty(reviewsCount))
+            {
+                var match = Regex.Match(htmlContent, @"\b(\d+)\s*(?:đánh giá|nhận xét|reviews)\b", RegexOptions.IgnoreCase);
+                if (match.Success) reviewsCount = match.Groups[1].Value;
+            }
+
+            if (string.IsNullOrEmpty(reviewsCount) && reviewNodes != null)
+            {
+                reviewsCount = reviewNodes.Count.ToString();
+            }
+
             return new ReviewFetchResult
             {
                 PartialStats = new ReviewStats
@@ -123,7 +144,8 @@ namespace resumeups.Server.Services
                     Found = true,
                     Rating = meta.AverageRating,
                     LogoUrl = meta.LogoUrl,
-                    Website = meta.Website
+                    Website = meta.Website,
+                    ReviewsCount = reviewsCount
                 },
                 RawReviews = rawReviewsText
             };

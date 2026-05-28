@@ -41,6 +41,8 @@ export class CompanyReviewsPage {
         return result.note8 || null;
       case 'reviewcongty':
         return result.reviewCongTy || null;
+      case 'indeed':
+        return result.indeed || null;
       default:
         return null;
     }
@@ -53,10 +55,7 @@ export class CompanyReviewsPage {
     const active = this.activePlatform();
     if (active?.logoUrl) return active.logoUrl;
 
-    const fallback = this.activeTab() === 'note8'
-      ? result.reviewCongTy?.logoUrl
-      : result.note8?.logoUrl;
-    return fallback || '';
+    return result.note8?.logoUrl || result.reviewCongTy?.logoUrl || '';
   });
 
   readonly ratingScore = computed<number>(() => {
@@ -90,22 +89,22 @@ export class CompanyReviewsPage {
     this.apiError.set(null);
     this.showResult.set(false);
 
-    this.reviewsService.search(query).subscribe({
+    this.reviewsService.search(query, this.languageService.currentLanguage()).subscribe({
       next: (res) => {
         this.reviewResult.set(res);
         this.showResult.set(true);
         this.isLoading.set(false);
 
-        // Pre-select active platform that has reviews
-        if (res.note8?.found) {
+        if (res.indeed?.found) {
+          this.activeTab.set('indeed');
+        } else if (res.note8?.found) {
           this.activeTab.set('note8');
         } else if (res.reviewCongTy?.found) {
           this.activeTab.set('reviewcongty');
         } else {
-          this.activeTab.set('note8');
+          this.activeTab.set('indeed');
         }
 
-        // Smooth scroll to results
         setTimeout(() => {
           const el = document.getElementById('reviews-result-section');
           if (el) {

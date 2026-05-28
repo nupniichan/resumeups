@@ -14,6 +14,7 @@ interface CompanyReviewsTranslation {
   tabs: {
     note8: string;
     reviewcongty: string;
+    indeed: string;
   };
   result: {
     visitWebsite: string;
@@ -24,6 +25,7 @@ interface CompanyReviewsTranslation {
     recommendationsLabel: string;
     emptyStateTitle: string;
     emptyStateDesc: string;
+    basedOnCount: string;
   };
 }
 
@@ -41,7 +43,8 @@ export const companyReviewsTranslations: LanguageDictionary<CompanyReviewsTransl
     },
     tabs: {
       note8: 'Note8.vn',
-      reviewcongty: 'ReviewCongTy.vn'
+      reviewcongty: 'ReviewCongTy.vn',
+      indeed: 'Indeed.com'
     },
     result: {
       visitWebsite: 'Visit official website',
@@ -51,7 +54,8 @@ export const companyReviewsTranslations: LanguageDictionary<CompanyReviewsTransl
       consLabel: 'Key Concerns (Cons)',
       recommendationsLabel: 'Management Advice & Suggestions',
       emptyStateTitle: 'No Reviews Found on this Platform',
-      emptyStateDesc: 'We searched extensively but could not find matching review listings for this company on this specific site :('
+      emptyStateDesc: 'We searched extensively but could not find matching review listings for this company on this specific site :(',
+      basedOnCount: 'Based on {count} reviews'
     }
   },
   vi: {
@@ -67,7 +71,8 @@ export const companyReviewsTranslations: LanguageDictionary<CompanyReviewsTransl
     },
     tabs: {
       note8: 'Note8.vn',
-      reviewcongty: 'ReviewCongTy.vn'
+      reviewcongty: 'ReviewCongTy.vn',
+      indeed: 'Indeed.com'
     },
     result: {
       visitWebsite: 'Ghé thăm website chính thức',
@@ -77,7 +82,8 @@ export const companyReviewsTranslations: LanguageDictionary<CompanyReviewsTransl
       consLabel: 'Nhược điểm',
       recommendationsLabel: 'Lời khuyên',
       emptyStateTitle: 'Chưa có đánh giá trên nền tảng này',
-      emptyStateDesc: 'Chúng tôi đã tra cứu kỹ lưỡng nhưng hiện tại chưa thấy thông tin đánh giá của công ty trên trang web này :('
+      emptyStateDesc: 'Chúng tôi đã tra cứu kỹ lưỡng nhưng hiện tại chưa thấy thông tin đánh giá của công ty trên trang web này :(',
+      basedOnCount: 'Dựa trên {count} đánh giá'
     }
   }
 };

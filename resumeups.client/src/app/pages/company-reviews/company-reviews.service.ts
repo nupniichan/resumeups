@@ -7,7 +7,7 @@ import { CompanyReviewResult } from './company-reviews.models';
 export class CompanyReviewsService {
   private readonly http = inject(HttpClient);
 
-  search(companyName: string): Observable<CompanyReviewResult> {
-    return this.http.post<CompanyReviewResult>('/api/company-reviews/search', { companyName });
+  search(companyName: string, language: string = 'vi'): Observable<CompanyReviewResult> {
+    return this.http.post<CompanyReviewResult>('/api/company-reviews/search', { companyName, language });
   }
 }
