@@ -1,6 +1,7 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { ScrollRevealDirective } from '../home/reveal.directive';
 import { LanguageService } from '../../core/i18n/language.service';
 import { companyReviewsTranslations } from '../../i18n/company-reviews.i18n';
@@ -10,7 +11,7 @@ import { CompanyReviewResult, ReviewStats } from './company-reviews.models';
 @Component({
   selector: 'app-company-reviews',
   standalone: true,
-  imports: [CommonModule, FormsModule, DecimalPipe, ScrollRevealDirective],
+  imports: [CommonModule, FormsModule, DecimalPipe, ScrollRevealDirective, RouterLink],
   templateUrl: './company-reviews.html'
 })
 export class CompanyReviewsPage {
