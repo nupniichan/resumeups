@@ -38,6 +38,8 @@ export class ResumeCheckerPage {
   readonly isLoading = signal(false);
   readonly apiError = signal('');
   readonly openedFaqIndex = signal<number | null>(0);
+  readonly isDragging = signal(false);
+  readonly isVi = computed(() => this.languageService.currentLanguage() === 'vi');
 
   private selectedFile: File | null = null;
   private cachedExtractedText = localStorage.getItem('resumeups_extracted_text') || '';
@@ -66,8 +68,11 @@ export class ResumeCheckerPage {
 
   onFileSelected(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    const file = inputElement.files?.[0];
+    const file = inputElement.files?.[0] || null;
+    this.processFile(file, inputElement);
+  }
 
+  processFile(file: File | null, inputElement?: HTMLInputElement): void {
     this.fileError.set('');
     this.showResult.set(false);
     this.apiError.set('');
@@ -101,7 +106,9 @@ export class ResumeCheckerPage {
         localStorage.removeItem('resumeups_file_name');
       } catch { }
       this.fileError.set(this.text().form.invalidFileError);
-      inputElement.value = '';
+      if (inputElement) {
+        inputElement.value = '';
+      }
       return;
     }
 
@@ -111,6 +118,33 @@ export class ResumeCheckerPage {
     try {
       localStorage.removeItem('resumeups_extracted_text');
     } catch { }
+
+    if (inputElement) {
+      inputElement.value = '';
+    }
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragging.set(true);
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragging.set(false);
+  }
+
+  onDrop(event: DragEvent, fileInput: HTMLInputElement): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragging.set(false);
+
+    const file = event.dataTransfer?.files?.[0] || null;
+    if (file) {
+      this.processFile(file, fileInput);
+    }
   }
 
   onJdInput(value: string): void {
