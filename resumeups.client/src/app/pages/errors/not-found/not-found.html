@@ -1,0 +1,56 @@
+<section
+  class="relative min-h-[calc(100dvh-var(--layout-chrome,0px))] w-full bg-white flex items-center justify-center px-6 py-20 sm:px-12 overflow-hidden"
+  role="main" aria-label="404 Error Page">
+
+
+
+  <div class="relative z-10 max-w-[600px] w-full">
+
+    <p class="bsod-emoji text-[clamp(3.5rem,10vw,5.5rem)] font-thin leading-none tracking-tighter text-[#1a3656] mb-6">
+      ( ._.)
+    </p>
+
+    <h1 class="bsod-title text-[clamp(1.6rem,3.5vw,2.2rem)] font-bold text-[#1a3656] leading-snug mb-4">
+      {{ text().errorTitle }}
+    </h1>
+    <p class="bsod-desc text-[0.95rem] leading-relaxed text-[#2d5279]/80 max-w-[480px] mb-8">
+      {{ text().errorDescription }}
+    </p>
+    <div class="bsod-progress mb-8">
+      <p class="text-[0.72rem] font-semibold uppercase tracking-wider text-[#2d5279]/50 mb-2">
+        {{ text().stopCode }}
+      </p>
+      <div class="w-[180px] h-[4px] bg-[#c6d8ea]/50 rounded-full overflow-hidden mb-1.5">
+        <div class="h-full w-full rounded-full bg-[#4f8fb8]"
+          role="progressbar" aria-valuenow="100" aria-valuemin="0"
+          aria-valuemax="100"></div>
+      </div>
+      <p class="text-[0.72rem] text-[#2d5279]/50">100{{ text().percentComplete }}</p>
+    </div>
+
+    <div class="bsod-meta rounded-xl border border-[#c6d8ea] bg-[#f7fafd] px-4 py-3 mb-8 space-y-1">
+      <p class="text-[0.75rem] text-[#2d5279]/60">
+        {{ text().whatFailed }}<span class="text-[#4f8fb8] font-semibold">{{ text().whatFailedValue }}</span>
+      </p>
+      <p class="text-[0.7rem] text-[#2d5279]/40 font-mono leading-relaxed">
+        {{ text().restartNote }}
+      </p>
+      <p class="bsod-label text-xs font-semibold uppercase tracking-widest text-[#4f8fb8] pt-1">
+        ERROR CODE: {{ text().errorCode }}
+      </p>
+    </div>
+    <div class="bsod-actions flex flex-wrap gap-3">
+      <a id="not-found-home-btn" routerLink="/home"
+        class="inline-flex items-center justify-center px-6 py-2.5 rounded-md bg-[#1a3656] text-white text-sm font-semibold transition-all duration-200 hover:bg-[#16304c] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#1a3656]/20">{{
+        text().goHomeBtn }}</a>
+      <button id="not-found-back-btn" type="button"
+        class="inline-flex items-center justify-center px-6 py-2.5 rounded-md border border-[#c6d8ea] text-[#1a3656] text-sm font-semibold bg-transparent transition-all duration-200 hover:bg-[#c6d8ea]/25 hover:-translate-y-0.5 cursor-pointer"
+        (click)="goBack()">{{ text().goBackBtn }}</button>
+    </div>
+
+  </div>
+  <p
+    class="absolute bottom-6 right-8 text-[0.65rem] font-bold text-[#c6d8ea] font-mono tracking-widest pointer-events-none select-none hidden sm:block">
+    0x00000404
+  </p>
+</section>

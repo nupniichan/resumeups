@@ -1,0 +1,11 @@
+.bsod-emoji  { animation: bsod-slide 0.5s cubic-bezier(0.22,1,0.36,1) 0s    both; }
+.bsod-label  { animation: bsod-slide 0.5s cubic-bezier(0.22,1,0.36,1) 0.06s both; }
+.bsod-title  { animation: bsod-slide 0.6s cubic-bezier(0.22,1,0.36,1) 0.12s both; }
+.bsod-desc   { animation: bsod-slide 0.6s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
+.bsod-progress { animation: bsod-slide 0.6s cubic-bezier(0.22,1,0.36,1) 0.26s both; }
+.bsod-meta   { animation: bsod-slide 0.6s cubic-bezier(0.22,1,0.36,1) 0.34s both; }
+.bsod-actions { animation: bsod-slide 0.6s cubic-bezier(0.22,1,0.36,1) 0.42s both; }
+@keyframes bsod-slide {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
