@@ -1,4 +1,4 @@
-﻿using resumeups.Server.Interfaces;
+using resumeups.Server.Interfaces;
 using UglyToad.PdfPig;
 
 namespace resumeups.Server.Services
@@ -22,8 +22,9 @@ namespace resumeups.Server.Services
 
                     if (words != null)
                     {
-                        var pageContent = string.Join(" ", words.Select(w => w.Text));
-                        sb.AppendLine(pageContent);
+                        foreach (var word in words)
+                            sb.Append(word.Text).Append(' ');
+                        sb.AppendLine();
                     }
                 }
 

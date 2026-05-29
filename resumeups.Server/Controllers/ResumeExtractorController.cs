@@ -40,7 +40,9 @@ namespace resumeups.Server.Controllers
             if (!allowedExtensions.Contains(normalizedExt))
                 return BadRequest("Only .pdf, .doc, .docx are supported");
 
-            var extractor = _extractors.First(x => x.extensionType(extension));
+            var extractor = _extractors.FirstOrDefault(x => x.extensionType(extension));
+            if (extractor == null)
+                return BadRequest($"'{extension}' is not supported.");
 
             await using var stream = file.OpenReadStream();
 

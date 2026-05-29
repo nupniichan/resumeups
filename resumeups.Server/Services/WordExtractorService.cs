@@ -1,4 +1,4 @@
-﻿using resumeups.Server.Interfaces;
+using resumeups.Server.Interfaces;
 using NPOI.XWPF.UserModel;
 
 namespace resumeups.Server.Services
@@ -15,7 +15,7 @@ namespace resumeups.Server.Services
             {
                 if (fileStream.CanSeek) fileStream.Position = 0;
 
-                var doc = new XWPFDocument(fileStream);
+                using var doc = new XWPFDocument(fileStream);
                 var sb = new System.Text.StringBuilder();
 
                 foreach (var paragraph in doc.Paragraphs)

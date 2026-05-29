@@ -21,7 +21,7 @@ namespace resumeups.Server.Services.Scrapers
 
         public async Task<(string? slug, string? host, string? html)> SearchGlassdoorSlugHostAndHtmlAsync(string companyName)
         {
-            var query = $"{companyName} glassdoor review";
+            var query = $"{companyName} glassdoor company review";
 
             var firecrawlApiKey = EnvReader.Get("FIRECRAWL_API_KEY");
             if (!string.IsNullOrWhiteSpace(firecrawlApiKey))

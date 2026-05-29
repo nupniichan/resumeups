@@ -21,7 +21,7 @@ namespace resumeups.Server.Services.Scrapers
 
         public async Task<(string? slug, string? host, string? html)> SearchIndeedSlugHostAndHtmlAsync(string companyName)
         {
-            var query = $"{companyName} indeed review";
+            var query = $"{companyName} indeed company review";
 
             var firecrawlApiKey = EnvReader.Get("FIRECRAWL_API_KEY");
             if (!string.IsNullOrWhiteSpace(firecrawlApiKey))

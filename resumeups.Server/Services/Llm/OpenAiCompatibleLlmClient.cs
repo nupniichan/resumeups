@@ -29,23 +29,36 @@ public sealed class OpenAiCompatible : ILLMClient
         };
 
         var client = _httpClientFactory.CreateClient("llm");
-
-        using var jsonContent = new StringContent(
-            JsonSerializer.Serialize(requestBody),
-            Encoding.UTF8,
-            "application/json");
-
         var requestUri = $"{_settings.BaseUrl}/chat/completions";
-        using var response = await client.PostAsync(requestUri, jsonContent, cancellationToken);
-        response.EnsureSuccessStatusCode();
+        var bodyJson = JsonSerializer.Serialize(requestBody);
 
-        var responseJson = await response.Content.ReadAsStringAsync(cancellationToken);
-        using var doc = JsonDocument.Parse(responseJson);
+        const int maxAttempts = 3;
+        const int delayMs = 3000;
 
-        return doc.RootElement
-            .GetProperty("choices")[0]
-            .GetProperty("message")
-            .GetProperty("content")
-            .GetString() ?? "";
+        for (int attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            try
+            {
+                using var jsonContent = new StringContent(bodyJson, Encoding.UTF8, "application/json");
+                using var response = await client.PostAsync(requestUri, jsonContent, cancellationToken);
+                response.EnsureSuccessStatusCode();
+
+                var responseJson = await response.Content.ReadAsStringAsync(cancellationToken);
+                using var doc = JsonDocument.Parse(responseJson);
+
+                return doc.RootElement
+                    .GetProperty("choices")[0]
+                    .GetProperty("message")
+                    .GetProperty("content")
+                    .GetString() ?? "";
+            }
+            catch (Exception ex) when (attempt < maxAttempts)
+            {
+                Console.WriteLine($"[LLM Client] Tried {attempt} and failed: {ex.Message}. Retrying in {delayMs / 1000}s...");
+                await Task.Delay(delayMs, cancellationToken);
+            }
+        }
+
+        throw new HttpRequestException("Can't get result from LLM.");
     }
 }
