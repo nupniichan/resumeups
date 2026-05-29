@@ -52,5 +52,31 @@ namespace resumeups.Server.Services.Scrapers
 
             return string.Empty;
         }
+
+        public async Task<string> SearchWithFirecrawlAsync(string query, string apiKey, int limit = 5)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+
+            var requestBody = new
+            {
+                query = query,
+                limit = limit
+            };
+
+            using var jsonContent = new StringContent(
+                System.Text.Json.JsonSerializer.Serialize(requestBody),
+                System.Text.Encoding.UTF8,
+                "application/json");
+
+            var response = await client.PostAsync("https://api.firecrawl.dev/v1/search", jsonContent);
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"Firecrawl Search: API call failed with status: {response.StatusCode}");
+                return string.Empty;
+            }
+
+            return await response.Content.ReadAsStringAsync();
+        }
     }
 }

@@ -6,5 +6,6 @@ namespace resumeups.Server.Models
         public ReviewStats Note8 { get; set; } = new();
         public ReviewStats ReviewCongTy { get; set; } = new();
         public ReviewStats Indeed { get; set; } = new();
+        public ReviewStats Glassdoor { get; set; } = new();
     }
 }

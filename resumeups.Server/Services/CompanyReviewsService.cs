@@ -10,17 +10,20 @@ namespace resumeups.Server.Services
         private readonly INote8ReviewService _note8Service;
         private readonly IReviewCongTyService _rctService;
         private readonly IIndeedReviewService _indeedService;
+        private readonly IGlassdoorReviewService _glassdoorService;
         private readonly IReviewSummarizerService _summarizer;
 
         public CompanyReviewsService(
             INote8ReviewService note8Service,
             IReviewCongTyService rctService,
             IIndeedReviewService indeedService,
+            IGlassdoorReviewService glassdoorService,
             IReviewSummarizerService summarizer)
         {
             _note8Service = note8Service;
             _rctService = rctService;
             _indeedService = indeedService;
+            _glassdoorService = glassdoorService;
             _summarizer = summarizer;
         }
 
@@ -31,6 +34,7 @@ namespace resumeups.Server.Services
             var note8SearchTask = _note8Service.SearchCandidatesAsync(companyName);
             var rctSearchTask = _rctService.SearchCandidatesAsync(companyName);
             var indeedTask = SafeFetch(() => _indeedService.GetIndeedReviewsAsync(companyName), "Indeed");
+            var glassdoorTask = SafeFetch(() => _glassdoorService.GetGlassdoorReviewsAsync(companyName, language), "Glassdoor");
 
             Note8CandidateData note8Candidates;
             ReviewCongTyCandidateData rctCandidates;
@@ -69,10 +73,11 @@ namespace resumeups.Server.Services
             var note8FetchTask = SafeFetch(() => _note8Service.FetchReviewsAsync(matchResult.Note8Slug, note8Candidates), "Note8");
             var rctFetchTask = SafeFetch(() => _rctService.FetchReviewsAsync(matchResult.ReviewCongTySlug), "ReviewCongTy");
 
-            await Task.WhenAll(note8FetchTask, rctFetchTask, indeedTask);
+            await Task.WhenAll(note8FetchTask, rctFetchTask, indeedTask, glassdoorTask);
             note8Fetch = await note8FetchTask;
             rctFetch = await rctFetchTask;
             var indeedFetch = await indeedTask;
+            var glassdoorFetch = await glassdoorTask;
 
             try
             {
@@ -121,6 +126,7 @@ namespace resumeups.Server.Services
             result.Note8 = note8Fetch.PartialStats;
             result.ReviewCongTy = rctFetch.PartialStats;
             result.Indeed = indeedFetch.PartialStats;
+            result.Glassdoor = glassdoorFetch.PartialStats;
             return result;
         }
 

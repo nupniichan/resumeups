@@ -84,5 +84,53 @@ namespace resumeups.Server.Utils
           ""cons"": [""Disadvantage 1"", ""Disadvantage 2""],
           ""recommendations"": [""Recommendation 1"", ""Recommendation 2""]
         }";
+
+        public const string GlassdoorSummarizationPrompt = @"Return ONLY valid JSON. Do not wrap in ```json codeblocks. No markdown, no extra text, no explanation.
+
+        You are a senior HR consultant analyzing a Glassdoor company review page's scraped markdown. Extract the overall rating, reviews count, category ratings, demographic group ratings, sample reviews/titles, and synthesize them into a professional summary, key pros/cons, and recommendations for job seekers.
+
+        ### RULES:
+        1. Write everything in natural, professional {LANGUAGE} (addressing the candidate as '{PRONOUN}').
+        2. Extract the overall rating (0.0 to 5.0) and total reviews count.
+        3. Extract or deduce category ratings (0.0 to 5.0) for:
+           - Work/Life Balance (workLifeBalance)
+           - Compensation & Benefits (payAndBenefits)
+           - Career Opportunities (jobSecurityAndAdvancement)
+           - Senior Management (management)
+           - Culture & Values (culture)
+           - Diversity & Inclusion (diversityAndInclusion)
+        4. Extract any Ratings by Demographic Groups (e.g. by gender, department, role, location, etc.) into a list of group names and their respective rating score.
+        5. Extract 5-10 recent review titles or summary lines (reviewTitles).
+        6. Keep the summary highly professional, objective, and concise (2-3 sentences).
+        7. Extract up to 4-5 key Pros and Cons of working at this company.
+        8. Provide 3-4 actionable Recommendations/Advice for job seekers.
+
+        ### SCRAPED GLASSDOOR MARKDOWN:
+        {MARKDOWN}
+
+        ### OUTPUT JSON FORMAT:
+        {
+          ""overallRating"": 4.1,
+          ""reviewsCount"": ""1.2K"",
+          ""workLifeBalance"": 3.8,
+          ""payAndBenefits"": 4.2,
+          ""jobSecurityAndAdvancement"": 3.9,
+          ""management"": 3.5,
+          ""culture"": 4.0,
+          ""diversityAndInclusion"": 4.3,
+          ""demographicRatings"": [
+            { ""group"": ""Gender - Female"", ""rating"": 4.0 },
+            { ""group"": ""Gender - Male"", ""rating"": 4.2 },
+            { ""group"": ""Full-time Employees"", ""rating"": 4.1 }
+          ],
+          ""reviewTitles"": [
+            ""Great work environment and smart people"",
+            ""Low pay compared to market standards""
+          ],
+          ""summary"": ""Summary of the employee experience, culture, and general sentiment."",
+          ""pros"": [""Advantage 1"", ""Advantage 2""],
+          ""cons"": [""Disadvantage 1"", ""Disadvantage 2""],
+          ""recommendations"": [""Recommendation 1"", ""Recommendation 2""]
+        }";
     }
 }

@@ -120,6 +120,70 @@ namespace resumeups.Server.Services
             }
         }
 
+        public async Task<ReviewStats> SummarizeGlassdoorAsync(
+            string companyName,
+            string markdown,
+            string language = "vi")
+        {
+            var translation = GetTranslation(language);
+            var prompt = CompanyReviewsPrompt.GlassdoorSummarizationPrompt
+                .Replace("{MARKDOWN}", markdown)
+                .Replace("{LANGUAGE}", translation.LanguageName)
+                .Replace("{PRONOUN}", translation.Pronoun);
+
+            try
+            {
+                var responseText = await _llmClient.GetResponseAsync(new[] { new LlmChatMessage("user", prompt) }, 0);
+                responseText = LlmTextHelper.CleanJsonResponse(responseText);
+
+                using var doc = JsonDocument.Parse(responseText);
+                var root = doc.RootElement;
+
+                var stats = ParseSummary(root);
+
+                if (root.TryGetProperty("overallRating", out var orProp) && (orProp.ValueKind == JsonValueKind.Number || orProp.ValueKind == JsonValueKind.String))
+                {
+                    stats.Rating = double.TryParse(orProp.ToString(), out var r) ? r : (double?)null;
+                }
+                
+                if (root.TryGetProperty("reviewsCount", out var rcProp))
+                {
+                    stats.ReviewsCount = rcProp.ValueKind == JsonValueKind.String ? rcProp.GetString() ?? "" : rcProp.ToString();
+                }
+
+                if (root.TryGetProperty("diversityAndInclusion", out var diProp) && (diProp.ValueKind == JsonValueKind.Number || diProp.ValueKind == JsonValueKind.String))
+                {
+                    stats.DiversityAndInclusion = double.TryParse(diProp.ToString(), out var di) ? di : (double?)null;
+                }
+
+                var demographics = new List<DemographicRating>();
+                if (root.TryGetProperty("demographicRatings", out var demoProp) && demoProp.ValueKind == JsonValueKind.Array)
+                {
+                    foreach (var item in demoProp.EnumerateArray())
+                    {
+                        var group = item.TryGetProperty("group", out var gProp) ? gProp.GetString() ?? "" : "";
+                        double? rating = null;
+                        if (item.TryGetProperty("rating", out var rProp) && (rProp.ValueKind == JsonValueKind.Number || rProp.ValueKind == JsonValueKind.String))
+                        {
+                            rating = double.TryParse(rProp.ToString(), out var rat) ? rat : (double?)null;
+                        }
+                        if (!string.IsNullOrEmpty(group))
+                        {
+                            demographics.Add(new DemographicRating { Group = group, Rating = rating });
+                        }
+                    }
+                }
+                stats.DemographicRatings = demographics;
+
+                return stats;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in Glassdoor AI review summarization: {ex.Message}");
+                return FallbackSummary(language);
+            }
+        }
+
         private static ReviewStats ParseSummary(JsonElement el)
         {
             var summary = el.GetProperty("summary").GetString() ?? "";

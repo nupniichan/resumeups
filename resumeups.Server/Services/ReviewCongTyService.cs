@@ -127,6 +127,7 @@ namespace resumeups.Server.Services
                     Rating = ratingScore,
                     LogoUrl = logoUrl,
                     Website = websiteUrl,
+                    ReviewsUrl = detailsUrl,
                     ReviewsCount = reviewsCount
                 },
                 RawReviews = rawReviewsText

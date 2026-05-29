@@ -56,20 +56,6 @@ namespace resumeups.Server.Services
                 {
                     Console.WriteLine("Indeed: Firecrawl returned empty response.");
                 }
-                else
-                {
-                    try
-                    {
-                        var scratchPath = Path.Combine(Directory.GetCurrentDirectory(), "scratch");
-                        if (!Directory.Exists(scratchPath)) Directory.CreateDirectory(scratchPath);
-                        await System.IO.File.WriteAllTextAsync(Path.Combine(scratchPath, "firecrawl_output.md"), markdown);
-                        Console.WriteLine("Indeed: Successfully dumped markdown to scratch/firecrawl_output.md");
-                    }
-                    catch (Exception dumpEx)
-                    {
-                        Console.WriteLine($"Indeed: Failed to dump markdown: {dumpEx.Message}");
-                    }
-                }
 
                 var isBlocked = string.IsNullOrWhiteSpace(markdown) || 
                                 (markdown.Contains("Base64-Image-Removed") && markdown.Length < 300);
@@ -116,7 +102,8 @@ namespace resumeups.Server.Services
                     Found = overallRating.HasValue,
                     Rating = overallRating,
                     LogoUrl = "", 
-                    Website = targetUrl, 
+                    Website = "",
+                    ReviewsUrl = targetUrl,
                     ReviewsCount = reviewsCount,
                     WorkLifeBalance = workLife,
                     PayAndBenefits = payBenefits,

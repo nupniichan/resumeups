@@ -86,7 +86,8 @@ namespace resumeups.Server.Services
                         Found = true,
                         Rating = meta.AverageRating,
                         LogoUrl = meta.LogoUrl,
-                        Website = meta.Website
+                        Website = meta.Website,
+                        ReviewsUrl = reviewsUrl
                     }
                 };
             }
@@ -145,6 +146,7 @@ namespace resumeups.Server.Services
                     Rating = meta.AverageRating,
                     LogoUrl = meta.LogoUrl,
                     Website = meta.Website,
+                    ReviewsUrl = reviewsUrl,
                     ReviewsCount = reviewsCount
                 },
                 RawReviews = rawReviewsText

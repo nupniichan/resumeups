@@ -2,7 +2,6 @@ import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ScrollRevealDirective } from '../home/reveal.directive';
 import { LanguageService } from '../../core/i18n/language.service';
 import { companyReviewsTranslations } from '../../i18n/company-reviews.i18n';
 import { CompanyReviewsService } from './company-reviews.service';
@@ -11,7 +10,7 @@ import { CompanyReviewResult, ReviewStats } from './company-reviews.models';
 @Component({
   selector: 'app-company-reviews',
   standalone: true,
-  imports: [CommonModule, FormsModule, DecimalPipe, ScrollRevealDirective, RouterLink],
+  imports: [CommonModule, FormsModule, DecimalPipe, RouterLink],
   templateUrl: './company-reviews.html'
 })
 export class CompanyReviewsPage {
@@ -44,6 +43,8 @@ export class CompanyReviewsPage {
         return result.reviewCongTy || null;
       case 'indeed':
         return result.indeed || null;
+      case 'glassdoor':
+        return result.glassdoor || null;
       default:
         return null;
     }
@@ -96,14 +97,16 @@ export class CompanyReviewsPage {
         this.showResult.set(true);
         this.isLoading.set(false);
 
-        if (res.indeed?.found) {
+        if (res.glassdoor?.found) {
+          this.activeTab.set('glassdoor');
+        } else if (res.indeed?.found) {
           this.activeTab.set('indeed');
         } else if (res.note8?.found) {
           this.activeTab.set('note8');
         } else if (res.reviewCongTy?.found) {
           this.activeTab.set('reviewcongty');
         } else {
-          this.activeTab.set('indeed');
+          this.activeTab.set('glassdoor');
         }
 
         setTimeout(() => {

@@ -35,6 +35,8 @@ namespace resumeups.Server.Utils
             services.AddScoped<IIndeedSearchService, IndeedSearchService>();
             services.AddScoped<IFirecrawlScraperService, FirecrawlScraperService>();
             services.AddScoped<IIndeedReviewService, IndeedReviewService>();
+            services.AddScoped<IGlassdoorSearchService, GlassdoorSearchService>();
+            services.AddScoped<IGlassdoorReviewService, GlassdoorReviewService>();
             services.AddScoped<ICompanyReviewsService, CompanyReviewsService>();
 
             return services;

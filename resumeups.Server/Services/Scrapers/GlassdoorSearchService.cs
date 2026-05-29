@@ -6,12 +6,12 @@ using resumeups.Server.Utils;
 
 namespace resumeups.Server.Services.Scrapers
 {
-    public sealed class IndeedSearchService : IIndeedSearchService
+    public sealed class GlassdoorSearchService : IGlassdoorSearchService
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IFirecrawlScraperService _scraperService;
 
-        public IndeedSearchService(
+        public GlassdoorSearchService(
             IHttpClientFactory httpClientFactory,
             IFirecrawlScraperService scraperService)
         {
@@ -19,9 +19,9 @@ namespace resumeups.Server.Services.Scrapers
             _scraperService = scraperService;
         }
 
-        public async Task<(string? slug, string? host, string? html)> SearchIndeedSlugHostAndHtmlAsync(string companyName)
+        public async Task<(string? slug, string? host, string? html)> SearchGlassdoorSlugHostAndHtmlAsync(string companyName)
         {
-            var query = $"{companyName} indeed review";
+            var query = $"{companyName} glassdoor review";
 
             var firecrawlApiKey = EnvReader.Get("FIRECRAWL_API_KEY");
             if (!string.IsNullOrWhiteSpace(firecrawlApiKey))
@@ -40,7 +40,7 @@ namespace resumeups.Server.Services.Scrapers
                                 var url = item.TryGetProperty("url", out var uProp) ? uProp.GetString() : null;
                                 if (!string.IsNullOrEmpty(url))
                                 {
-                                    var (slug, host) = IndeedReviewParser.ExtractIndeedSlugAndHost(url);
+                                    var (slug, host) = GlassdoorReviewParser.ExtractGlassdoorSlugAndHost(url);
                                     if (!string.IsNullOrEmpty(slug))
                                     {
                                         return (slug, host, searchJson);
@@ -52,7 +52,7 @@ namespace resumeups.Server.Services.Scrapers
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Indeed Search: Firecrawl Search exception: {ex.Message}. Trying scrapers fallback...");
+                    Console.WriteLine($"Glassdoor Search: Firecrawl Search exception: {ex.Message}. Trying scrapers fallback...");
                 }
             }
 
@@ -66,17 +66,16 @@ namespace resumeups.Server.Services.Scrapers
                 if (response.IsSuccessStatusCode)
                 {
                     searchHtml = await response.Content.ReadAsStringAsync();
-                    var (slug, host) = IndeedReviewParser.ExtractIndeedSlugAndHost(searchHtml);
+                    var (slug, host) = GlassdoorReviewParser.ExtractGlassdoorSlugAndHost(searchHtml);
                     if (!string.IsNullOrEmpty(slug))
                     {
                         return (slug, host, searchHtml);
                     }
                 }
-                Console.WriteLine($"Indeed Search: Google Search failed or was blocked. Falling back to DuckDuckGo...");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Indeed Search: Google Search exception: {ex.Message}. Trying DuckDuckGo fallback...");
+                Console.WriteLine($"Glassdoor Search: Google Search exception: {ex.Message}");
             }
 
             try
@@ -86,13 +85,13 @@ namespace resumeups.Server.Services.Scrapers
                 if (response.IsSuccessStatusCode)
                 {
                     searchHtml = await response.Content.ReadAsStringAsync();
-                    var (slug, host) = IndeedReviewParser.ExtractIndeedSlugAndHost(searchHtml);
+                    var (slug, host) = GlassdoorReviewParser.ExtractGlassdoorSlugAndHost(searchHtml);
                     return (slug, host, searchHtml);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Indeed Search: DuckDuckGo search fallback failed: {ex.Message}");
+                Console.WriteLine($"Glassdoor Search: DuckDuckGo search fallback failed: {ex.Message}");
             }
             return (null, null, searchHtml);
         }

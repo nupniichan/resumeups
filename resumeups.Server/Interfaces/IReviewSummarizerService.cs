@@ -28,5 +28,10 @@ namespace resumeups.Server.Interfaces
             double? culture,
             List<string> reviewTitles,
             string language = "vi");
+
+        Task<ReviewStats> SummarizeGlassdoorAsync(
+            string companyName,
+            string markdown,
+            string language = "vi");
     }
 }

@@ -11,7 +11,7 @@ namespace resumeups.Server.Services.Scrapers
         {
             if (string.IsNullOrEmpty(html)) return (null, null);
 
-            var match = Regex.Match(html, @"([a-z0-9.-]*indeed\.com)/cmp/([^/&?#""\s]+)", RegexOptions.IgnoreCase);
+            var match = Regex.Match(html, @"([a-z0-9.-]*indeed\.com)(?:\/|%2[fF])cmp(?:\/|%2[fF])([^/&?#""\s\)\>%]+)", RegexOptions.IgnoreCase);
             if (match.Success)
             {
                 var host = match.Groups[1].Value;
