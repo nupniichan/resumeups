@@ -4,6 +4,18 @@ services:
       context: ./resumeups.client
     ports:
       - "4200:80"
+    networks:
+      - FE-nw
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     restart: unless-stopped
     depends_on:
       - server
@@ -15,7 +27,139 @@ services:
       - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - LLM_BASE_URL=${LLM_BASE_URL:-https://openrouter.ai/api/v1}
+      - LLM_BASE_URL=${LLM_BASE_URL}
       - LLM_API_KEY=${LLM_API_KEY}
-      - LLM_MODEL=${LLM_MODEL:-openai/gpt-oss-120b:free}
+      - LLM_MODEL=${LLM_MODEL}
+      - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
+    networks:
+      - BE-nw
+      - DB-nw
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     restart: unless-stopped
+
+  database:
+    image: postgres:15-alpine
+    container_name: database
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - database-data:/var/lib/postgresql/data
+    networks:
+      - DB-nw
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    restart: unless-stopped
+
+  monitoring:
+    image: zabbix/zabbix-server-pgsql:alpine-latest
+    container_name: monitoring
+    environment:
+      DB_SERVER_HOST: database
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "10051:10051"
+    networks:
+      - DB-nw
+      - BE-nw
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - database
+    restart: unless-stopped
+
+  monitoring-web:
+    image: zabbix/zabbix-web-nginx-pgsql:alpine-latest
+    container_name: monitoring-web
+    environment:
+      DB_SERVER_HOST: database
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      ZBX_SERVER_HOST: monitoring
+      PHP_TZ: Asia/Ho_Chi_Minh
+    ports:
+      - "8085:8080"
+    networks:
+      - BE-nw
+      - DB-nw
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - database
+      - monitoring
+    restart: unless-stopped
+
+  nginx-gateway:
+    image: nginx:alpine
+    container_name: nginx-gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - FE-nw
+      - BE-nw
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - client
+      - server
+      - monitoring-web
+    restart: unless-stopped
+
+volumes:
+  database-data:
+
+networks:
+  FE-nw:
+    driver: bridge
+  BE-nw:
+    driver: bridge
+  DB-nw:
+    driver: bridge
+    internal: true 
