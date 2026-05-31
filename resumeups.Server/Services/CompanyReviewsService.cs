@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using resumeups.Server.Interfaces;
 using resumeups.Server.Models;
 
@@ -12,23 +13,37 @@ namespace resumeups.Server.Services
         private readonly IIndeedReviewService _indeedService;
         private readonly IGlassdoorReviewService _glassdoorService;
         private readonly IReviewSummarizerService _summarizer;
+        private readonly IMemoryCache _cache;
 
         public CompanyReviewsService(
             INote8ReviewService note8Service,
             IReviewCongTyService rctService,
             IIndeedReviewService indeedService,
             IGlassdoorReviewService glassdoorService,
-            IReviewSummarizerService summarizer)
+            IReviewSummarizerService summarizer,
+            IMemoryCache cache)
         {
             _note8Service = note8Service;
             _rctService = rctService;
             _indeedService = indeedService;
             _glassdoorService = glassdoorService;
             _summarizer = summarizer;
+            _cache = cache;
         }
 
         public async Task<CompanyReviewResult> GetCompanyReviewsAsync(string companyName, string language = "vi")
         {
+            if (string.IsNullOrWhiteSpace(companyName))
+            {
+                return new CompanyReviewResult { CompanyName = companyName };
+            }
+
+            var cacheKey = $"company_reviews_{companyName.Trim().ToLowerInvariant()}_{language?.ToLowerInvariant() ?? "vi"}";
+            if (_cache.TryGetValue(cacheKey, out CompanyReviewResult? cachedResult) && cachedResult != null)
+            {
+                return cachedResult;
+            }
+
             var result = new CompanyReviewResult { CompanyName = companyName };
 
             var note8SearchTask = _note8Service.SearchCandidatesAsync(companyName);
@@ -127,6 +142,12 @@ namespace resumeups.Server.Services
             result.ReviewCongTy = rctFetch.PartialStats;
             result.Indeed = indeedFetch.PartialStats;
             result.Glassdoor = glassdoorFetch.PartialStats;
+
+            if ((result.Note8?.Found == true) || (result.ReviewCongTy?.Found == true) || (result.Indeed?.Found == true) || (result.Glassdoor?.Found == true))
+            {
+                _cache.Set(cacheKey, result, TimeSpan.FromHours(24));
+            }
+
             return result;
         }
 

@@ -5,34 +5,34 @@ namespace resumeups.Server.Services
 {
     public partial class PiiMaskerService : IPiiMaskerService
     {
-        [GeneratedRegex(@"\b[A-Za-z0-9._%+\-]+(@[A-Za-z0-9.\-]+\.[A-Za-z]{2,})\b")]
+        [GeneratedRegex(@"\b[A-Za-z0-9._%+\-]+(@[A-Za-z0-9.\-]+\.[A-Za-z]{2,})\b", RegexOptions.None, 250)]
         private static partial Regex EmailRegex();
 
-        [GeneratedRegex(@"\+?\d{1,3}[\s\-.]?\(?\d{1,4}\)?[\s\-.]?\d[\d\s\-\.]{4,10}\d")]
+        [GeneratedRegex(@"\+?\d{1,3}[\s\-.]?\(?\d{1,4}\)?[\s\-.]?\d[\d\s\-\.]{4,10}\d", RegexOptions.None, 250)]
         private static partial Regex PhoneRegex();
 
-        [GeneratedRegex(@"\b\d{1,4}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}\b")]
+        [GeneratedRegex(@"\b\d{1,4}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}\b", RegexOptions.None, 250)]
         private static partial Regex DobNumericRegex();
 
-        [GeneratedRegex(@"\b\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{4}\b", RegexOptions.IgnoreCase)]
+        [GeneratedRegex(@"\b\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{4}\b", RegexOptions.IgnoreCase, 250)]
         private static partial Regex DobTextRegex();
 
-        [GeneratedRegex(@"(?i)(address|addr|location|địa\s*chỉ|dirección|adresse|indirizzo|住所|주소)\s*[:\-]?\s*(.{8,120}?)(?=\r?\n|$)")]
+        [GeneratedRegex(@"(?i)(address|addr|location|địa\s*chỉ|dirección|adresse|indirizzo|住所|주소)\s*[:\-]?\s*(.{8,120}?)(?=\r?\n|$)", RegexOptions.None, 250)]
         private static partial Regex AddressRegex();
 
-        [GeneratedRegex(@"(linkedin\.com/in/)[A-Za-z0-9\-]+")]
+        [GeneratedRegex(@"(linkedin\.com/in/)[A-Za-z0-9\-]+", RegexOptions.None, 250)]
         private static partial Regex LinkedInRegex();
 
-        [GeneratedRegex(@"(github\.com/)[A-Za-z0-9\-]+")]
+        [GeneratedRegex(@"(github\.com/)[A-Za-z0-9\-]+", RegexOptions.None, 250)]
         private static partial Regex GitHubRegex();
 
-        [GeneratedRegex(@"https?://(?!(?:www\.)?linkedin\.com)(?!(?:www\.)?github\.com)[A-Za-z0-9\-\.\/?=&%_]+")]
+        [GeneratedRegex(@"https?://(?!(?:www\.)?linkedin\.com)(?!(?:www\.)?github\.com)[A-Za-z0-9\-\.\/?=&%_]+", RegexOptions.None, 250)]
         private static partial Regex PortfolioRegex();
 
-        [GeneratedRegex(@"(?i)(full\s*name|first\s*name|last\s*name|given\s*name|surname|name|họ\s*(?:và?\s*)?tên|nombre|nom|nome|名前|성명|名字)\s*[:\-]?\s*[\p{L}][\p{L}\s\-'\.]{1,60}")]
+        [GeneratedRegex(@"(?i)(full\s*name|first\s*name|last\s*name|given\s*name|surname|name|họ\s*(?:và?\s*)?tên|nombre|nom|nome|名前|성명|名字)\s*[:\-]?\s*[\p{L}][\p{L}\s\-'\.]{1,60}", RegexOptions.None, 250)]
         private static partial Regex FullNameRegex();
 
-        [GeneratedRegex(@"(?i)(passport\s*(?:no\.?|number|#)?|national\s*id|id\s*(?:no\.?|number|card)|cccd|cmnd|nric|sin|dni|nif|bsn|pesel|aadhaar)\s*[:\-#]?\s*[A-Z0-9]{6,18}\b")]
+        [GeneratedRegex(@"(?i)(passport\s*(?:no\.?|number|#)?|national\s*id|id\s*(?:no\.?|number|card)|cccd|cmnd|nric|sin|dni|nif|bsn|pesel|aadhaar)\s*[:\-#]?\s*[A-Z0-9]{6,18}\b", RegexOptions.None, 250)]
         private static partial Regex IdDocumentsRegex();
 
         public string MaskEmail(string input) =>

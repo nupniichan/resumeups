@@ -33,7 +33,6 @@ public sealed class OpenAiCompatible : ILLMClient
         var bodyJson = JsonSerializer.Serialize(requestBody);
 
         const int maxAttempts = 3;
-        const int delayMs = 3000;
 
         for (int attempt = 1; attempt <= maxAttempts; attempt++)
         {
@@ -54,7 +53,8 @@ public sealed class OpenAiCompatible : ILLMClient
             }
             catch (Exception ex) when (attempt < maxAttempts)
             {
-                Console.WriteLine($"[LLM Client] Tried {attempt} and failed: {ex.Message}. Retrying in {delayMs / 1000}s...");
+                int delayMs = (int)(Math.Pow(2, attempt) * 1000) + Random.Shared.Next(0, 1000);
+                Console.WriteLine($"[LLM Client] Attempt {attempt} failed: {ex.Message}. Retrying in {delayMs}ms...");
                 await Task.Delay(delayMs, cancellationToken);
             }
         }

@@ -13,14 +13,13 @@ namespace resumeups.Server.Utils
         {
             services.AddHttpClient();
             services.AddSingleton(LlmSettings.FromEnvironment());
-
             services.AddHttpClient("llm", static (sp, client) =>
             {
                 var settings = sp.GetRequiredService<LlmSettings>();
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", settings.ApiKey);
+                client.Timeout = TimeSpan.FromSeconds(25);
             });
-
             services.AddScoped<ILLMClient, OpenAiCompatible>();
 
             services.AddScoped<IResumeExtractorService, PdfExtractorService>();
